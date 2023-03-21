@@ -1,6 +1,8 @@
 <?php
+
 namespace RequestManager;
 
+use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 use RequestManager\Requests\GuzzleRequest;
 
@@ -9,45 +11,21 @@ use RequestManager\Requests\GuzzleRequest;
  */
 class RequestRunner
 {
-    /**
-     * @var RequestClient $client
-     */
-    protected RequestClient $client;
-
+    protected ?RequestClient $client = null;
     /**
      * @var string
      */
     private string $uri;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    private ?string $auth = null;
+    private ?array $auth = null;
 
     /**
      * @var array|null
      */
     private ?array $header = null;
-
-    /**
-     *
-     */
-    const GET = 'get';
-
-    /**
-     *
-     */
-    const POST = 'post';
-
-    /**
-     *
-     */
-    const UPDATE = 'update';
-
-    /**
-     *
-     */
-    const DELETE = 'delete';
 
     /**
      * @var array
@@ -58,9 +36,9 @@ class RequestRunner
      * @param RequestClient|null $client
      * @return RequestRunner
      */
-    public function setClient(?RequestClient $client): RequestRunner
+    public function setClient(?RequestClient $client = null): RequestRunner
     {
-        $this->client = $client ?? new GuzzleRequest();
+        $this->client = !is_null($client) ? $client : new GuzzleRequest();
         return $this;
     }
 
@@ -71,7 +49,17 @@ class RequestRunner
      */
     public function basicAuth(string $username, string $password): RequestRunner
     {
-        $this->auth = (base64_encode($username . ':' . $password));
+        $this->auth = [$username, $password];
+        return $this;
+    }
+
+    /**
+     * @param string $token
+     * @return $this
+     */
+    public function bearerToken(string $token): RequestRunner
+    {
+        $this->auth = ['Authorization' => 'Bearer ' . $token];
         return $this;
     }
 
@@ -111,18 +99,18 @@ class RequestRunner
      */
     public function post(string $route): array
     {
-        $this->uri = $this->uri . DIRECTORY_SEPARATOR . $route;
-        return $this->run(self::POST);
+        $this->uri = $this->uri . $route;
+        return $this->run(ApiActions::POST);
     }
 
     /**
      * @param string $route
      * @return array
      */
-    public function get(string $route): array
+    public function get(string $route)
     {
-        $this->uri = $this->uri . DIRECTORY_SEPARATOR . $route;
-        return $this->run(self::GET);
+        $this->uri = $this->uri . $route;
+        return $this->run(ApiActions::GET);
     }
 
     /**
@@ -131,8 +119,8 @@ class RequestRunner
      */
     public function update(string $route): array
     {
-        $this->uri = $this->uri . DIRECTORY_SEPARATOR . $route;
-        return $this->run(self::UPDATE);
+        $this->uri = $this->uri . $route;
+        return $this->run(ApiActions::UPDATE);
     }
 
     /**
@@ -141,20 +129,27 @@ class RequestRunner
      */
     public function delete(string $route): array
     {
-        $this->uri = $this->uri . DIRECTORY_SEPARATOR . $route;
-        return $this->run(self::DELETE);
+        $this->uri = $this->uri . $route;
+        return $this->run(ApiActions::DELETE);
     }
 
     /**
      * @param string $method
      * @return array
      */
-    public function run(string $method): array
+    public function run(string $method)
     {
+        if (is_null($this->client)) {
+            $this->setClient();
+        }
+
+        if (!empty($this->data)) {
+            $this->client->setData($this->data);
+        }
+
         $this->client->setAuth($this->auth);
         $this->client->setUri($this->uri);
         $this->client->setHeader($this->header);
-        $this->client->setData($this->data);
 
         return $this->client->request($method);
     }
