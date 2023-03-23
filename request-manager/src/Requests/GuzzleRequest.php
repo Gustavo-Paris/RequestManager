@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 
 class GuzzleRequest implements RequestClient
@@ -66,24 +67,26 @@ class GuzzleRequest implements RequestClient
     {
         $this->setOptions();
 
-        try {
-            //TODO: parametros verify desabilita SSL
-            $client = new Client(['verify' => false]);
-            $response = $client
+        ini_set('display_errors', '1');
+        ini_set('display_startup_errors', '1');
+        error_reporting(E_ALL);
+
+        //TODO: parametros verify desabilita SSL
+        $client = new Client(['verify' => false]);
+
+        $response = $client
                 ->request(
                     $method,
                     $this->uri,
                     $this->options,
                 );
 
-            return json_decode(
-                $response->getBody()->getContents(),
-                true
-            );
-        } catch (ClientException|RequestException $clientException)
-        {
-            return $this->handleException($clientException);
-        }
+        $this->handleException($response);
+
+        return json_decode(
+            $response->getBody()->getContents(),
+            true
+        );
     }
 
     /**
@@ -103,22 +106,30 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @param $clientException
+     * @param $response
      * @return array
      */
-    public function handleException($clientException): array
+    public function handleException($response): array
     {
-        if(isset($clientException->getHandlerContext()['error']) ){
-
-            return [
-                'code' => $clientException->getCode(),
-                'message' => $clientException->getHandlerContext()['error']
-            ];
-        } else {
-            return [
-                'code' => $clientException->getCode(),
-                'message' => $clientException->getMessage()
-            ];
+        if(!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
+            return throw new ClientException();
         }
+        return [];
+    }
+
+    /**
+     * @param $response
+     * @return mixed|array
+     */
+    private function handleResponse($response)
+    {
+        if (in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
+            return json_decode(
+                $response->getBody()->getContents(),
+                true
+            );
+        }
+
+        return $this->handleException($response);
     }
 }

@@ -2,48 +2,31 @@
 
 require "vendor/autoload.php";
 
-use RequestManager\RequestRunner;
+$uri = 'https://192.168.33.146/webservice/v1';
+$username = '2';
+$password = '166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140';
+$router = 'cliente';
+$header = ['ixcsoft' => 'listar'];
 
-//$postData = [
-//    'qtype' => 'cliente.id',
-//    'query' => '10',
-//    'oper' => '=',
-//    'page' => '1',
-//    'rp' => '20',
-//    'sortname' => 'cliente.id',
-//    'sortorder' => 'asc'
-//];
+//$example1 = (new \RequestManager\examples\GuzzleExample01())->exampleRequest($uri, $router, $username, $password, $header);
+//$example2 = (new \RequestManager\examples\GuzzleExample02())->exampleRequest(
+//    $uri,
+//    $router,
+//    ['ixcsoft' => 'listar', 'Authorization' => 'Basic ' . base64_encode($username.':'.$password)]
+//);
 
-//new RequestRunner()
-//->setClient() //será opcional caso nao seja selecionado será utilizado um tipo de client padrão ainda a ser definido
-//->basicAuth('2', '166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140') // será opcional por padrão não será utilizado authenticacao
-//->setHeader(['ixcsoft' => 'listar', 'Authorization' => 'Basic ' . $credencials]) // será opcional com os headers padrões do client utilizado
-//->setHeader(['ixcsoft' => 'listar']) // será opcional com os headers padrões do client utilizado
-//->setUri('https://192.168.33.146/webservice/v1') //será obrigatório para sabermos a url da API que esta sendo consumida
-//->get('/cliente'); // será obrigatório o método a ser utilizado get, post, put ou delete
 
-#Exemplo sem setar client e autenticação com métodos padrões
-//$credencials = base64_encode('2:166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140');
-//$return = (new RequestRunner())
-//    ->setHeader(['ixcsoft' => 'listar', 'Authorization' => 'Basic ' . $credencials])
-//    ->setUri('https://192.168.33.146/webservice/v1')
-//    ->get('/cliente');
-//
-//echo json_encode($return);
+#Exemplo de request
+try {
+    $response = (new \RequestManager\examples\GuzzleExample03())->exampleRequest(
+        (new \RequestManager\Requests\GuzzleRequest()),$uri, $router, $username, $password, $header);
 
-#Exemplo sem setar client e utilizando basic auth com métodos padrões
-//$credencials = base64_encode('2:166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140');
-//$return = (new RequestRunner())
-//    ->basicAuth('2', '166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140')
-//    ->setHeader(['ixcsoft' => 'listar'])
-//    ->setUri('https://192.168.33.146/webservice/v1')
-//    ->get('/cliente');
+    echo $response;
 
-$return = (new RequestRunner())
-    ->basicAuth('2', '166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140')
-    ->setHeader(['ixcsoft' => 'listar'])
-    ->setUri('https://192.168.33.146/webservice/v1')
-    ->get('/cliente');
-
-echo json_encode($return);
+} catch (Exception $e) {
+    echo json_encode([
+        'Code: ' . $e->getCode(),
+        'Message: ' . str_replace('\\', '', $e->getMessage())
+        ]);
+}
 

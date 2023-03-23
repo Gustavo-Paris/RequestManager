@@ -12,4 +12,6 @@ class ApiActions
     const UPDATE = 'update';
     /** @const DELETE */
     const DELETE = 'delete';
+
+    const HTTP_CODE_SUCCESS = [200, 201, 202];
 }
