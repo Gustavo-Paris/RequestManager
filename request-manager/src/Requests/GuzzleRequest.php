@@ -5,7 +5,6 @@ namespace RequestManager\Requests;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 
@@ -66,20 +65,15 @@ class GuzzleRequest implements RequestClient
     public function request(string $method): array
     {
         $this->setOptions();
-
-        ini_set('display_errors', '1');
-        ini_set('display_startup_errors', '1');
-        error_reporting(E_ALL);
-
         //TODO: parametros verify desabilita SSL
         $client = new Client(['verify' => false]);
 
         $response = $client
-                ->request(
-                    $method,
-                    $this->uri,
-                    $this->options,
-                );
+            ->request(
+                $method,
+                $this->uri,
+                $this->options,
+            );
 
         $this->handleException($response);
 
@@ -111,7 +105,7 @@ class GuzzleRequest implements RequestClient
      */
     public function handleException($response): array
     {
-        if(!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
+        if (!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
             return throw new ClientException();
         }
         return [];

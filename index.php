@@ -29,4 +29,3 @@ try {
         'Message: ' . str_replace('\\', '', $e->getMessage())
         ]);
 }
-
