@@ -108,6 +108,7 @@ class GuzzleRequest implements RequestClient
         if (!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
             return throw new ClientException();
         }
+
         return [];
     }
 

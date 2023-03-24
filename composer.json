@@ -1,7 +1,8 @@
 {
   "require": {
     "guzzlehttp/guzzle": "^7.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "php-curl-class/php-curl-class": "^9.14"
   },
   "autoload": {
     "psr-4": {

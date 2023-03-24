@@ -1,5 +1,7 @@
 <?php
 
+use RequestManager\Requests\PhpCurlClassRequest;
+
 require "vendor/autoload.php";
 
 $uri = 'https://192.168.33.146/webservice/v1';
@@ -16,16 +18,51 @@ $header = ['ixcsoft' => 'listar'];
 //);
 
 
-#Exemplo de request
-try {
-    $response = (new \RequestManager\examples\GuzzleExample03())->exampleRequest(
-        (new \RequestManager\Requests\GuzzleRequest()),$uri, $router, $username, $password, $header);
+#Exemplo de request Guzzle
+//try {
+//    $response = (new \RequestManager\examples\GuzzleExample03())->exampleRequest(
+//        (new \RequestManager\Requests\GuzzleRequest()),$uri, $router, $username, $password, $header);
+//
+//    echo $response;
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'Code: ' . $e->getCode(),
+//        'Message: ' . str_replace('\\', '', $e->getMessage())
+//        ]);
+//}
 
-    echo $response;
+//#Exemplo de request Curl
+//try {
+//    $reponse = new \RequestManager\RequestRunner();
+//    $reponse->setClient((new \RequestManager\Requests\PhpCurlClassRequest()))
+//        ->basicAuth($username, $password)
+//        ->setHeader($header)
+//        ->setUri($uri)
+//        ->post('/cliente');
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
+
+//#Exemplo de request Curl 01
+try {
+    $response = new \RequestManager\examples\PhpCurlClassRequestExample01();
+    $response->exampleRequest(
+        (new PhpCurlClassRequest()),
+        $uri,
+        $router,
+        $username,
+        $password,
+        $header
+    );
 
 } catch (Exception $e) {
     echo json_encode([
-        'Code: ' . $e->getCode(),
-        'Message: ' . str_replace('\\', '', $e->getMessage())
-        ]);
+        'code: ' => $e->getCode(),
+        'message: ' => str_replace('\\', '', $e->getMessage())
+    ]);
 }

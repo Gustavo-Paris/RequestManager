@@ -12,5 +12,5 @@ interface RequestClient
 
     public function setData(array $data): void;
 
-    public function request(string $method): array;
+    public function request(string $method): mixed;
 }
