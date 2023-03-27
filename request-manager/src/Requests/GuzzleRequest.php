@@ -20,6 +20,8 @@ class GuzzleRequest implements RequestClient
     private ?array $auth = null;
     /** @var array|null */
     private ?array $options = null;
+    /** Options for making requests via post */
+    private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
 
     /**
      * @param array|null $auth
@@ -84,7 +86,7 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @return void
+     * @return array|void|null
      */
     private function setOptions()
     {
@@ -95,7 +97,24 @@ class GuzzleRequest implements RequestClient
             $this->options['auth'] = $this->auth;
         }
         if (!is_null($this->data)) {
-            $this->options['body'] = $this->data;
+            if ($this->data['multipart']) {
+                foreach ($this->data['multipart'] as $key => $value) {
+                    foreach ($this->data['multipart'][$key] as $key2 => $value2) {
+                        $this->options['multipart'][] = [
+                            "name" => $key2,
+                            "contents" => $value2
+                        ];
+                    }
+                }
+            } else {
+                foreach (self::GUZZLE_ACTIONS_POST as $keyAcions) {
+                    if ($this->data[$keyAcions]) {
+                        $this->options[$keyAcions] = $this->data[$keyAcions];
+                    }
+                }
+            }
+
+            return $this->options;
         }
     }
 

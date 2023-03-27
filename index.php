@@ -1,5 +1,7 @@
 <?php
 
+use RequestManager\RequestRunner;
+use RequestManager\Requests\GuzzleRequest;
 use RequestManager\Requests\PhpCurlClassRequest;
 
 require "vendor/autoload.php";
@@ -7,39 +9,67 @@ require "vendor/autoload.php";
 $uri = 'https://192.168.33.146/webservice/v1';
 $username = '2';
 $password = '166d2c1afbd81248dacb6ade049e871d6138676081a0926694a32d5024291140';
-$router = 'cliente';
-$header = ['ixcsoft' => 'listar'];
+$router = 'unidades';
 
-//$example1 = (new \RequestManager\examples\GuzzleExample01())->exampleRequest($uri, $router, $username, $password, $header);
-//$example2 = (new \RequestManager\examples\GuzzleExample02())->exampleRequest(
-//    $uri,
-//    $router,
-//    ['ixcsoft' => 'listar', 'Authorization' => 'Basic ' . base64_encode($username.':'.$password)]
-//);
+echo '<h1>Request-Manager</h1>';
+echo '<hr>';
+//Example Multipart
+//$data = [
+//    [
+//        'name' => 'descricao',
+//        'contents' => 'Unidade API'
+//    ],
+//    [
+//        'name' => 'sigla',
+//        'contents' => 'UNAPI'
+//    ]
+//];
 
+#################################
+#    TESTE UTILIZANDO GUZZLE    #
+#################################
 
-#Exemplo de request Guzzle
+//LIST UNITS IN API IXC
+try {
+    $url = sprintf('%s%s',
+      '/',$router
+    );
+    $response = (new RequestRunner())
+        ->setClient(new GuzzleRequest())
+        ->basicAuth($username, $password)
+        ->setHeader(['ixcsoft' => 'listar'])
+        ->setUri($uri)
+        ->get($url);
+
+        echo json_encode($response);
+
+} catch (Exception $e) {
+    echo json_encode([
+        'code: ' => $e->getCode(),
+        'message: ' => str_replace('\\', '', $e->getMessage())
+    ]);
+}
+
+//CREATE UNITS IN API IXC
+// $data = [
+//    [
+//        'descricao' => 'descricao',
+//        'sigla' => 'sigla'
+//    ]
+// ];
 //try {
-//    $response = (new \RequestManager\examples\GuzzleExample03())->exampleRequest(
-//        (new \RequestManager\Requests\GuzzleRequest()),$uri, $router, $username, $password, $header);
-//
-//    echo $response;
-//
-//} catch (Exception $e) {
-//    echo json_encode([
-//        'Code: ' . $e->getCode(),
-//        'Message: ' . str_replace('\\', '', $e->getMessage())
-//        ]);
-//}
-
-//#Exemplo de request Curl
-//try {
-//    $reponse = new \RequestManager\RequestRunner();
-//    $reponse->setClient((new \RequestManager\Requests\PhpCurlClassRequest()))
+//    $url = sprintf('%s%s',
+//        '/', $router
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new GuzzleRequest())
 //        ->basicAuth($username, $password)
-//        ->setHeader($header)
+//        ->setHeader(['ixcsoft' => ''])
 //        ->setUri($uri)
-//        ->post('/cliente');
+//        ->setData(['multipart' => $data])
+//        ->post($url);
+//
+//    echo json_encode($response);
 //
 //} catch (Exception $e) {
 //    echo json_encode([
@@ -48,21 +78,158 @@ $header = ['ixcsoft' => 'listar'];
 //    ]);
 //}
 
-//#Exemplo de request Curl 01
-try {
-    $response = new \RequestManager\examples\PhpCurlClassRequestExample01();
-    $response->exampleRequest(
-        (new PhpCurlClassRequest()),
-        $uri,
-        $router,
-        $username,
-        $password,
-        $header
-    );
+//EDIT UNITS IN API IXC
 
-} catch (Exception $e) {
-    echo json_encode([
-        'code: ' => $e->getCode(),
-        'message: ' => str_replace('\\', '', $e->getMessage())
-    ]);
-}
+//$data = [
+//    'descricao' => 'Nova descricao',
+//    'sigla' => 'NA'
+//];
+//try {
+//    $url = sprintf('%s%s%s%s',
+//    '/',
+//        $router,
+//        DIRECTORY_SEPARATOR,
+//        30
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new GuzzleRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => ''])
+//        ->setUri($uri)
+//        ->setData(['json' => $data])
+//        ->put($url);
+//
+//    echo json_encode($response);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
+
+#DELETE UNITS IN API IXC
+//try {
+//    $url = sprintf('%s%s%s%s',
+//    '/',
+//        $router,
+//        DIRECTORY_SEPARATOR,
+//        30
+//    );
+//
+//    $response = (new RequestRunner())
+//        ->setClient(new GuzzleRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => ''])
+//        ->setUri($uri)
+//        ->delete($url);
+//
+//    echo json_encode($response);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => $e->getMessage()
+//    ]);
+//}
+
+
+#################################
+#TESTE UTILIZANDO PhpCurlRequest#
+#################################
+
+//LIST CLIENT IN API IXC
+//try {
+//    $url = sprintf('%s%s',
+//      '/',$router
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new PhpCurlClassRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => 'listar'])
+//        ->setUri($uri)
+//        ->post($url);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
+
+//CREATE CLIENT IN API IXC
+//try {
+//    $data = [
+//        'descricao' => 'Nova descricao',
+//        'sigla' => 'NA'
+//    ];
+//
+//    $url = sprintf('%s%s',
+//      '/',$router
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new PhpCurlClassRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => ''])
+//        ->setUri($uri)
+//        ->setData($data)
+//        ->post($url);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
+
+//EDIT CLIENT IN API IXC
+//try {
+//    $data =[
+//        'descricao' => 'Nova descricao2',
+//        'sigla' => 'NA2'
+//    ];
+//
+//    $url = sprintf('%s%s%s%s',
+//    '/',
+//        $router,
+//        DIRECTORY_SEPARATOR,
+//        9
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new PhpCurlClassRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => ''])
+//        ->setUri($uri)
+//        ->setData($data)
+//        ->put($url);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
+
+//DELETE CLIENT IN API IXC
+//try {
+//
+//    $url = sprintf('%s%s%s%s',
+//    '/',
+//        $router,
+//        DIRECTORY_SEPARATOR,
+//        24
+//    );
+//
+//    $response = (new RequestRunner())
+//        ->setClient(new PhpCurlClassRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => ''])
+//        ->setUri($uri)
+//        ->delete($url);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}

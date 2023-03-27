@@ -69,7 +69,8 @@ class PhpCurlClassRequest implements RequestClient
         $this->getClient()->setOpt(CURLOPT_SSL_VERIFYPEER, 0);
         $this->getClient()->setOpt(CURLOPT_SSL_VERIFYHOST, 0);
         //TODO: verificar uma maneira melhor de setar os metodos que vem do parametro
-        $this->getClient()->$method($this->uri, $this->data);
+
+        $this->getClient()->$method($this->uri, json_encode($this->data));
 
         if ($this->getClient()->error) {
             $this->handleException($this->getClient());

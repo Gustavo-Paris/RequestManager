@@ -117,10 +117,10 @@ class RequestRunner
      * @param string $route
      * @return array
      */
-    public function update(string $route): array
+    public function put(string $route): array
     {
         $this->uri = $this->uri . $route;
-        return $this->run(ApiActions::UPDATE);
+        return $this->run(ApiActions::PUT);
     }
 
     /**

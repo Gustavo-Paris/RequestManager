@@ -9,7 +9,7 @@ class ApiActions
     /** @const POST */
     const POST = 'post';
     /** @const UPDATE */
-    const UPDATE = 'update';
+    const PUT = 'put';
     /** @const DELETE */
     const DELETE = 'delete';
 
