@@ -1,10 +1,9 @@
 <?php
 
+use RequestManager\examples\CallExampleWithoutTryCacthGuzzle;
 use GuzzleHttp\Exception\RequestException;
 
 require "vendor/autoload.php";
-
-$container = new Pimple\Container();
 
 
 $uri = 'https://192.168.33.146/webservice/v1';
@@ -22,7 +21,7 @@ try {
         'password' => $password,
     ];
 
-    $callExample = new \RequestManager\examples\CallExampleWithoutTryCacthGuzzle();
+    $callExample = new CallExampleWithoutTryCacthGuzzle();
     $response = $callExample->request($data);
 
     echo json_encode($response);

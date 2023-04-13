@@ -11,6 +11,9 @@ use RequestManager\Requests\GuzzleRequest;
  */
 class RequestRunner
 {
+    /**
+     * @var null
+     */
     protected $client = null;
     /**
      * @var string
@@ -33,7 +36,7 @@ class RequestRunner
     private $data;
 
     /**
-     * @param RequestClient|null $client
+     * @param  RequestClient|null $client
      * @return RequestRunner
      */
     public function setClient(?RequestClient $client = null): RequestRunner
@@ -43,8 +46,8 @@ class RequestRunner
     }
 
     /**
-     * @param string $username
-     * @param string $password
+     * @param  string $username
+     * @param  string $password
      * @return $this
      */
     public function basicAuth(string $username, string $password): RequestRunner
@@ -54,7 +57,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $token
+     * @param  string $token
      * @return $this
      */
     public function bearerToken(string $token): RequestRunner
@@ -64,7 +67,7 @@ class RequestRunner
     }
 
     /**
-     * @param array $header
+     * @param  array $header
      * @return $this
      */
     public function setHeader(array $header): RequestRunner
@@ -74,7 +77,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $uri
+     * @param  string $uri
      * @return $this
      */
     public function setUri(string $uri): RequestRunner
@@ -84,7 +87,7 @@ class RequestRunner
     }
 
     /**
-     * @param array $data
+     * @param  array $data
      * @return $this
      */
     public function setData(array $data): RequestRunner
@@ -94,7 +97,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $route
+     * @param  string $route
      * @return array
      */
     public function post(string $route): array
@@ -104,7 +107,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $route
+     * @param  string $route
      * @return array
      */
     public function get(string $route)
@@ -114,7 +117,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $route
+     * @param  string $route
      * @return array
      */
     public function put(string $route): array
@@ -124,7 +127,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $route
+     * @param  string $route
      * @return array
      */
     public function delete(string $route): array
@@ -134,7 +137,7 @@ class RequestRunner
     }
 
     /**
-     * @param string $method
+     * @param  string $method
      * @return array
      */
     public function run(string $method)
@@ -153,5 +156,4 @@ class RequestRunner
 
         return $this->client->request($method);
     }
-
 }

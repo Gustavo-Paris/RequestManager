@@ -2,14 +2,16 @@
 
 namespace RequestManager\examples;
 
+use RequestManager\Interfaces\RequestClient;
 use RequestManager\RequestRunner;
 
 /**
- * Exemplo de requisição com client padrão utilizando basicAuth
+ *
  */
-class GuzzleExample01
+class GuzzleExample03
 {
     /**
+     * @param RequestClient $requestClient
      * @param string $uri
      * @param string $router
      * @param string $username
@@ -18,14 +20,15 @@ class GuzzleExample01
      * @return false|string
      */
     public function exampleRequest(
+        RequestClient $requestClient,
         string $uri,
         string $router,
         string $username,
         string $password,
-        array  $header
-    )
-    {
+        array $header
+    ) {
         $return = (new RequestRunner())
+            ->setClient($requestClient)
             ->basicAuth($username, $password)
             ->setHeader($header)
             ->setUri($uri)

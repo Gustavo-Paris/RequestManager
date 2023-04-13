@@ -4,6 +4,12 @@
   "license": "proprietary",
   "minimum-stability": "stable",
   "prefer-stable": true,
+  "scripts": {
+    "phpcompatibility-version7-3" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3 --extensions=php",
+    "phpcompatibility-version7-4" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4 --extensions=php",
+    "phpcompatibility-version8-0" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0 --extensions=php",
+    "phpcs-security" : "./vendor/bin/phpcs --extensions=php --standard=ruleset-security-audit.xml "
+  },
   "config": {
     "platform": {
       "php": "7.3"
@@ -28,11 +34,14 @@
     "guzzlehttp/guzzle": "^7.5.0",
     "ext-json": "*",
     "php-curl-class/php-curl-class": "^9.14",
-    "pimple/pimple": "^3.5"
+    "squizlabs/php_codesniffer": "^3.7",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "phpunit/phpunit": "^9.6"
   },
   "autoload": {
     "psr-4": {
-      "RequestManager\\": "request-manager/src"
+      "RequestManager\\": "src",
+      "RequestManager\\Tests\\": "tests"
     }
   }
 }

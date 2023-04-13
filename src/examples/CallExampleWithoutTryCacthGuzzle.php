@@ -11,8 +11,10 @@ class CallExampleWithoutTryCacthGuzzle
     private const UNITS_LIST = 'unidades';
     public function request(array $data)
     {
-        $url = sprintf('%s%s',
-            '/', self::UNITS_LIST
+        $url = sprintf(
+            '%s%s',
+            '/',
+            self::UNITS_LIST
         );
 
         return (new RequestRunner())

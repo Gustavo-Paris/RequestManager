@@ -8,7 +8,7 @@ interface RequestClient
 
     public function setUri(string $uri): void;
 
-    public function setHeader(array $header): void;
+    public function setHeader(array $header): array;
 
     public function setData(array $data): void;
 

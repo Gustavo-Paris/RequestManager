@@ -9,6 +9,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 
+/**
+ * Class Guzzle Client Request
+ */
 class GuzzleRequest implements RequestClient
 {
     /** @var string */
@@ -44,11 +47,11 @@ class GuzzleRequest implements RequestClient
 
     /**
      * @param array $header
-     * @return void
+     * @return array
      */
-    public function setHeader(array $header): void
+    public function setHeader(array $header): array
     {
-        $this->header = $header;
+        return $this->header = $header;
     }
 
     /**

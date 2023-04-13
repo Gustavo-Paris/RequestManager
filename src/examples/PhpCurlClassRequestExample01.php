@@ -18,13 +18,12 @@ class PhpCurlClassRequestExample01
      */
     public function exampleRequest(
         RequestClient $requestClient,
-        string        $uri,
-        string        $router,
-        string        $username,
-        string        $password,
-        array         $header
-    ): array
-    {
+        string $uri,
+        string $router,
+        string $username,
+        string $password,
+        array $header
+    ): array {
         return (new RequestRunner())
             ->setClient($requestClient)
             ->basicAuth($username, $password)
