@@ -1,10 +1,11 @@
 <?php
 
-use RequestManager\RequestRunner;
-use RequestManager\Requests\GuzzleRequest;
-use RequestManager\Requests\PhpCurlClassRequest;
+use GuzzleHttp\Exception\RequestException;
 
 require "vendor/autoload.php";
+
+$container = new Pimple\Container();
+
 
 $uri = 'https://192.168.33.146/webservice/v1';
 $username = '2';
@@ -13,6 +14,23 @@ $router = 'unidades';
 
 echo '<h1>Request-Manager</h1>';
 echo '<hr>';
+
+try {
+    $data = [
+        'url' => $uri,
+        'username' => $username,
+        'password' => $password,
+    ];
+
+    $callExample = new \RequestManager\examples\CallExampleWithoutTryCacthGuzzle();
+    $response = $callExample->request($data);
+
+    echo json_encode($response);
+
+} catch (RequestException $e) {
+    echo $e->getMessage();
+}
+
 //Example Multipart
 //$data = [
 //    [
@@ -30,25 +48,25 @@ echo '<hr>';
 #################################
 
 //LIST UNITS IN API IXC
-try {
-    $url = sprintf('%s%s',
-      '/',$router
-    );
-    $response = (new RequestRunner())
-        ->setClient(new GuzzleRequest())
-        ->basicAuth($username, $password)
-        ->setHeader(['ixcsoft' => 'listar'])
-        ->setUri($uri)
-        ->get($url);
-
-        echo json_encode($response);
-
-} catch (Exception $e) {
-    echo json_encode([
-        'code: ' => $e->getCode(),
-        'message: ' => str_replace('\\', '', $e->getMessage())
-    ]);
-}
+//try {
+//    $url = sprintf('%s%s',
+//      '/',$router
+//    );
+//    $response = (new RequestRunner())
+//        ->setClient(new GuzzleRequest())
+//        ->basicAuth($username, $password)
+//        ->setHeader(['ixcsoft' => 'listar'])
+//        ->setUri($uri)
+//        ->get($url);
+//
+//        echo json_encode($response);
+//
+//} catch (Exception $e) {
+//    echo json_encode([
+//        'code: ' => $e->getCode(),
+//        'message: ' => str_replace('\\', '', $e->getMessage())
+//    ]);
+//}
 
 //CREATE UNITS IN API IXC
 // $data = [

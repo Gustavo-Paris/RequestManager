@@ -2,6 +2,7 @@
 
 namespace RequestManager\Requests;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -11,15 +12,15 @@ use RequestManager\Interfaces\RequestClient;
 class GuzzleRequest implements RequestClient
 {
     /** @var string */
-    private string $uri = '';
+    private $uri = '';
     /** @var array|null */
-    private ?array $header = null;
+    private $header = null;
     /** @var array|null */
-    private ?array $data = null;
+    private $data = null;
     /** @var array|null */
-    private ?array $auth = null;
+    private $auth = null;
     /** @var array|null */
-    private ?array $options = null;
+    private $options = null;
     /** Options for making requests via post */
     private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
 
@@ -77,8 +78,6 @@ class GuzzleRequest implements RequestClient
                 $this->options,
             );
 
-        $this->handleException($response);
-
         return json_decode(
             $response->getBody()->getContents(),
             true
@@ -121,19 +120,19 @@ class GuzzleRequest implements RequestClient
     /**
      * @param $response
      * @return array
+     * @throws Exception
      */
     public function handleException($response): array
     {
         if (!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
-            return throw new ClientException();
+            return throw new ClientException('Error: ', $response, $response);
         }
-
-        return [];
     }
 
     /**
      * @param $response
-     * @return mixed|array
+     * @return array|mixed
+     * @throws Exception
      */
     private function handleResponse($response)
     {

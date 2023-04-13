@@ -1,8 +1,34 @@
 {
+  "name": "ixc/http",
+  "description": "Pacote para realizar requests http",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "platform": {
+      "php": "7.3"
+    }
+  },
+  "authors": [
+    {
+      "name": "Wesley Bonfim Sartori",
+      "email": "wesley.sartori@ixcsoft.com.br"
+    },
+    {
+      "name": "Gustavo Paris",
+      "email": "gustavo.paris@ixcsoft.com.br"
+    },
+    {
+      "name": "Nicolas R. Hackenhar",
+      "email": "niolas.hackenhar@ixcsoft.com.br"
+    }
+  ],
   "require": {
-    "guzzlehttp/guzzle": "^7.0",
+    "php": ">=7.3",
+    "guzzlehttp/guzzle": "^7.5.0",
     "ext-json": "*",
-    "php-curl-class/php-curl-class": "^9.14"
+    "php-curl-class/php-curl-class": "^9.14",
+    "pimple/pimple": "^3.5"
   },
   "autoload": {
     "psr-4": {

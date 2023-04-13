@@ -11,26 +11,26 @@ use RequestManager\Requests\GuzzleRequest;
  */
 class RequestRunner
 {
-    protected ?RequestClient $client = null;
+    protected $client = null;
     /**
      * @var string
      */
-    private string $uri;
+    private $uri;
 
     /**
      * @var array|null
      */
-    private ?array $auth = null;
+    private $auth = null;
 
     /**
      * @var array|null
      */
-    private ?array $header = null;
+    private $header = null;
 
     /**
      * @var array
      */
-    private array $data;
+    private $data;
 
     /**
      * @param RequestClient|null $client
