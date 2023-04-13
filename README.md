@@ -14,4 +14,9 @@ composer require Gustavo-Paris/RequestManager
 
 ### Documentantion
 
-[Link documentation.](https://github.com/Gustavo-Paris/RequestManager/blob/master/docs/README.md)
+[Link to documentation and examples.](https://github.com/Gustavo-Paris/RequestManager/blob/master/docs/README.md)
+
+### Contributing
+
+[Link to contributing.](https://github.com/Gustavo-Paris/RequestManager/blob/master/docs/CONTRIBUTING.md)
+
