@@ -1,4 +1,10 @@
+#Project
 /vendor
 /index.php
 
+#Ides
 .idea
+
+#tests
+/code-coverage
+/.phpunit.result.cache

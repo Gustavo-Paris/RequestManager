@@ -3,11 +3,15 @@
 <hr>
 
 ### Requirements
+```text
 Request Management Package requires PHP version 7.3.0 or greater.
+```
 
 ### Installation
-
+```text
 To use the package it is necessary to install it via composer:
+```
+
 ```php
 composer require Gustavo-Paris/RequestManager
 ```

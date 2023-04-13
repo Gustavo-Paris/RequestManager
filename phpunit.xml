@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" stderr="true" bootstrap="./phpunit-bootstrap.php" convertNoticesToExceptions="false" convertWarningsToExceptions="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd">
-    <coverage>
-        <include>
-            <directory suffix=".php">./**/src</directory>y>
-        </include>
-    </coverage>
-
-    <php>
-        <ini name="display_errors" value="On"/>
-        <ini name="display_startup_errors" value="On"/>
-        <env name="PHPUNIT_ENV" value="true" force="true"/>
-    </php>
-
-    <testsuite name="Source">
-        <directory>tests</directory>
-    </testsuite>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>
