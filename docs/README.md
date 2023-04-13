@@ -2,12 +2,6 @@
 
 <hr>
 
-### Installation
-
-```php
-composer require Gustavo-Paris/RequestManager
-```
-
 ### Example of use GuzzleRequest
 
 ### GET Method with basic authentication
@@ -34,7 +28,7 @@ composer require Gustavo-Paris/RequestManager
     }
 
 ```
-### POST Method with basic authentication    
+### POST Method with basic authentication
 
 ```php
     try {
