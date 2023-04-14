@@ -6,6 +6,17 @@ use PHPUnit\Framework\TestCase;
 use RequestManager\RequestRunner;
 use RequestManager\Requests\GuzzleRequest;
 
+/**
+ * Template File Doc Comment
+ *
+ * PHP version 7.3
+ *
+ * @category
+ * @package  RequestRunnerTest.php
+ * @author   Author <wesley.sartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class RequestRunnerTest extends TestCase
 {
     /**
@@ -13,46 +24,60 @@ class RequestRunnerTest extends TestCase
      */
     private $requestRunner;
 
-
     /**
      * @return void
      */
-    public function testSetClient()
+    public function testSetClient(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->setClient((new GuzzleRequest()));
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
 
-    public function testSetHeaderAuth()
+    /**
+     * @return void
+     */
+    public function testSetHeaderAuth(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->setHeader(['header' => 'teste']);
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
 
-    public function testBasicAuth()
+    /**
+     * @return void
+     */
+    public function testBasicAuth(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->basicAuth('test', 'test');
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
 
-    public function testBearerToken()
+    /**
+     * @return void
+     */
+    public function testBearerToken(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->bearerToken('02SAdasd0adsad');
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
 
-    public function testSetUri()
+    /**
+     * @return void
+     */
+    public function testSetUri(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->setUri('https://api.com.br');
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
 
-    public function testSetData()
+    /**
+     * @return void
+     */
+    public function testSetData(): void
     {
         $this->requestRunner = new RequestRunner();
         $actual = $this->requestRunner->setData(['data' => []]);
@@ -60,11 +85,14 @@ class RequestRunnerTest extends TestCase
     }
 
 
-    public function testRun()
+    /**
+     * @return void
+     */
+    public function testRun(): void
     {
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
-           return [];
+        $guzzleRequest->method('request')->willReturnCallback(function () {
+            return [];
         });
 
         $this->requestRunner = new RequestRunner();
@@ -78,7 +106,10 @@ class RequestRunnerTest extends TestCase
         self::assertEquals([], $actual);
     }
 
-    public function testRunIsNull()
+    /**
+     * @return void
+     */
+    public function testRunIsNull(): void
     {
         $requestRunnerMock = $this->createMock(RequestRunner::class);
         $requestRunnerMock->method('setClient')->willReturnCallback(function () {
@@ -86,8 +117,8 @@ class RequestRunnerTest extends TestCase
         });
 
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
-           return null;
+        $guzzleRequest->method('request')->willReturnCallback(function () {
+            return null;
         });
 
         $requestRunnerMock->setUri('https://api.com.br/');
@@ -98,10 +129,13 @@ class RequestRunnerTest extends TestCase
         self::assertEmpty($actual, '');
     }
 
-    public function testPost()
+    /**
+     * @return void
+     */
+    public function testPost(): void
     {
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
+        $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'data' => 'data'
             ]];
@@ -121,10 +155,13 @@ class RequestRunnerTest extends TestCase
         ]], $actual);
     }
 
-    public function testGet()
+    /**
+     * @return void
+     */
+    public function testGet(): void
     {
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
+        $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
                 'message' => 'Listed successfuly',
@@ -148,10 +185,13 @@ class RequestRunnerTest extends TestCase
         ]], $actual);
     }
 
-    public function testPut()
+    /**
+     * @return void
+     */
+    public function testPut(): void
     {
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
+        $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
                 'message' => 'Updated successfuly',
@@ -173,10 +213,13 @@ class RequestRunnerTest extends TestCase
         ]], $actual);
     }
 
-    public function testDelete()
+    /**
+     * @return void
+     */
+    public function testDelete(): void
     {
         $guzzleRequest = $this->createMock(GuzzleRequest::class);
-        $guzzleRequest->method('request')->willReturnCallback(function (){
+        $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
                 'message' => 'Deleted successfuly',
