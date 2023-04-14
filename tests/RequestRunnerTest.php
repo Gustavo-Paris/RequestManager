@@ -58,4 +58,23 @@ class RequestRunnerTest extends TestCase
         $actual = $this->requestRunner->setData(['data' => []]);
         $this->assertInstanceOf(RequestRunner::class, $actual);
     }
+
+
+    public function testRun()
+    {
+        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest->method('request')->willReturnCallback(function (){
+           return [];
+        });
+
+        $this->requestRunner = new RequestRunner();
+        $this->requestRunner->setClient($guzzleRequest);
+        $this->requestRunner->basicAuth('user', 'pass');
+        $this->requestRunner->setUri('https://api.com.br/');
+        $this->requestRunner->setHeader(['header']);
+        $this->requestRunner->setData(['data' => 'data']);
+
+        $actual = $this->requestRunner->run('post');
+        self::assertEquals([], $actual);
+    }
 }
