@@ -1,5 +1,6 @@
 {
-  "name": "ixc-soft/request-manager",
+  "name": "wbsartori/request-manager",
+  "type": "library",
   "description": "Pacote para realizar requests http",
   "license": "proprietary",
   "minimum-stability": "stable",
