@@ -13,7 +13,7 @@ To use the package it is necessary to install it via composer:
 ```
 
 ```php
-composer require Gustavo-Paris/RequestManager
+composer require wbsartori/request-manager
 ```
 
 ### Documentantion
