@@ -22,6 +22,9 @@ currently our package supports GuzzleRequet and PhpCurlClass with some abstracti
 
 ### GET Method with basic authentication
 ```php
+    use RequestManager\RequestRunner;
+    use RequestManager\Requests\GuzzleRequest;
+    
     try {
         $url = sprintf('%s%s',
           '/',$router
@@ -35,6 +38,115 @@ currently our package supports GuzzleRequet and PhpCurlClass with some abstracti
             ->get($url);
     
             echo json_encode($response);
+
+    } catch (Exception $e) {
+        echo json_encode([
+            'code: ' => $e->getCode(),
+            'message: ' => $e->getMessage()
+        ]);
+    }
+
+```
+
+### POST Method with basic authentication
+```php     
+    
+    use RequestManager\RequestRunner;
+    use RequestManager\Requests\GuzzleRequest;
+    
+    try {
+        $data = [
+            [
+                'description' => 'description',
+                'acronym' => 'acronym'
+            ]
+         ];
+         
+        $url = sprintf('%s%s',
+            '/', $router
+        );
+        
+        $response = (new RequestRunner())
+            ->setClient(new GuzzleRequest())
+            ->basicAuth($username, $password)
+            ->setHeader(['header' => ''])
+            ->setUri($uri)
+            ->setData(['multipart' => $data])
+            ->post($url);
+    
+        echo json_encode($response);
+    
+    } catch (Exception $e) {
+        echo json_encode([
+            'code: ' => $e->getCode(),
+            'message: ' => str_replace('\\', '', $e->getMessage())
+        ]);
+    }
+    
+```
+
+### UPDATE Method with basic authentication
+
+```php  
+        
+    use RequestManager\RequestRunner;
+    use RequestManager\Requests\GuzzleRequest;
+    
+    try {
+        $data = [
+            'description' => 'New description',
+            'acronym' => 'NA'
+        ];
+        
+        $url = sprintf('%s%s%s%s',
+        '/',
+            $router,
+            DIRECTORY_SEPARATOR,
+            30
+        );
+        
+        $response = (new RequestRunner())
+            ->setClient(new GuzzleRequest())
+            ->basicAuth($username, $password)
+            ->setHeader(['header' => ''])
+            ->setUri($uri)
+            ->setData(['json' => $data])
+            ->put($url);
+    
+        echo json_encode($response);
+    
+    } catch (Exception $e) {
+        echo json_encode([
+            'code: ' => $e->getCode(),
+            'message: ' => str_replace('\\', '', $e->getMessage())
+        ]);
+    }
+    
+```
+
+### DELETE Method with basic authentication
+
+```php  
+        
+    use RequestManager\RequestRunner;
+    use RequestManager\Requests\GuzzleRequest;
+    
+    try {
+        $url = sprintf('%s%s%s%s',
+        '/',
+            $router,
+            DIRECTORY_SEPARATOR,
+            30
+        );
+    
+        $response = (new RequestRunner())
+            ->setClient(new GuzzleRequest())
+            ->basicAuth($username, $password)
+            ->setHeader(['header' => ''])
+            ->setUri($uri)
+            ->delete($url);
+    
+        echo json_encode($response);
 
     } catch (Exception $e) {
         echo json_encode([
