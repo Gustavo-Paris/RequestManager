@@ -1,7 +1,7 @@
 {
   "name": "wbsartori/request-manager",
   "type": "library",
-  "description": "Pacote para realizar requests http",
+  "description": "Request Manager is a PHP HTTP client library containing the abstraction of the Guzzle and PhpCurlClass libraries",
   "license": "proprietary",
   "minimum-stability": "stable",
   "prefer-stable": true,
