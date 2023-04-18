@@ -107,10 +107,10 @@ class RequestRunner
     }
 
     /**
-     * @param  string $route
+     * @param string $route
      * @return array
      */
-    public function get(string $route)
+    public function get(string $route = '')
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::GET);
@@ -120,7 +120,7 @@ class RequestRunner
      * @param  string $route
      * @return array
      */
-    public function put(string $route): array
+    public function put(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::PUT);
@@ -130,7 +130,7 @@ class RequestRunner
      * @param  string $route
      * @return array
      */
-    public function delete(string $route): array
+    public function delete(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::DELETE);

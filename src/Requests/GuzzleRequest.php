@@ -65,10 +65,10 @@ class GuzzleRequest implements RequestClient
 
     /**
      * @param string $method
-     * @return array|string
+     * @return mixed
      * @throws GuzzleException
      */
-    public function request(string $method): array
+    public function request(string $method)
     {
         $this->setOptions();
         //TODO: parametros verify desabilita SSL
@@ -128,7 +128,7 @@ class GuzzleRequest implements RequestClient
     public function handleException($response): array
     {
         if (!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
-            return throw new ClientException('Error: ', $response, $response);
+            throw new ClientException('Error: ', $response, $response);
         }
     }
 
