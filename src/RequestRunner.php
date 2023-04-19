@@ -4,7 +4,7 @@ namespace RequestManager;
 
 use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
-use RequestManager\Requests\GuzzleRequest;
+use RequestManager\Http\GuzzleRequest;
 
 /**
  *
@@ -60,7 +60,7 @@ class RequestRunner
      * @param  string $token
      * @return $this
      */
-    public function bearerToken(string $token): RequestRunner
+    public function bearerTokenAuth(string $token): RequestRunner
     {
         $this->auth = ['Authorization' => 'Bearer ' . $token];
         return $this;
@@ -110,7 +110,7 @@ class RequestRunner
      * @param string $route
      * @return array
      */
-    public function get(string $route = '')
+    public function get(string $route)
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::GET);
@@ -120,7 +120,7 @@ class RequestRunner
      * @param  string $route
      * @return array
      */
-    public function put(string $route = ''): array
+    public function put(string $route): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::PUT);
@@ -130,7 +130,7 @@ class RequestRunner
      * @param  string $route
      * @return array
      */
-    public function delete(string $route = ''): array
+    public function delete(string $route): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::DELETE);

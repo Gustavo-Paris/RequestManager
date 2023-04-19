@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestManager\Requests;
+namespace RequestManager\Http;
 
 use Exception;
 use GuzzleHttp\Client;

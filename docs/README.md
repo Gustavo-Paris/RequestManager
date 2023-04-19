@@ -130,6 +130,7 @@ CallExampleWithoutTryCacthGuzzle has a request method which calls our client in 
 ```
 
 ### Class template with request method
+
 ```php
     <?php
     
@@ -137,7 +138,7 @@ CallExampleWithoutTryCacthGuzzle has a request method which calls our client in 
     
     use Exception;
     use RequestManager\RequestRunner;
-    use RequestManager\Requests\GuzzleRequest;
+    use RequestManager\Http\GuzzleRequest;
     
     class CallExampleWithoutTryCacthGuzzle
     {

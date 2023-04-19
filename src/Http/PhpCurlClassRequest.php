@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestManager\Requests;
+namespace RequestManager\Http;
 
 use Curl\Curl;
 use Exception;
@@ -10,15 +10,15 @@ use RequestManager\Interfaces\RequestClient;
 class PhpCurlClassRequest implements RequestClient
 {
     /** @var string */
-    private string $uri = '';
+    private $uri = '';
     /** @var array|null */
-    private ?array $header = null;
+    private $header = null;
     /** @var array|null */
-    private ?array $data = null;
+    private $data = null;
     /** @var array|null */
-    private ?array $auth = null;
+    private $auth = null;
     /** @var Curl */
-    private Curl $client;
+    private $client;
 
     /**
      * @param array|null $auth
@@ -40,9 +40,9 @@ class PhpCurlClassRequest implements RequestClient
 
     /**
      * @param array $header
-     * @return void
+     * @return array
      */
-    public function setHeader(array $header): void
+    public function setHeader(array $header): array
     {
         $this->header = $header;
     }

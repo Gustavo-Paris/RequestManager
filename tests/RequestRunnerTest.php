@@ -4,7 +4,7 @@ namespace RequestManager\Tests;
 
 use PHPUnit\Framework\TestCase;
 use RequestManager\RequestRunner;
-use RequestManager\Requests\GuzzleRequest;
+use RequestManager\Http\GuzzleRequest;
 
 /**
  * Template File Doc Comment

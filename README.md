@@ -21,9 +21,10 @@ You can call the Runner class and in the setClient method pass the client you wa
 currently our package supports GuzzleRequet and PhpCurlClass with some abstractions.
 
 ### GET Method with basic authentication
+
 ```php
     use RequestManager\RequestRunner;
-    use RequestManager\Requests\GuzzleRequest;
+    use RequestManager\Http\GuzzleRequest;
     
     try {
         $url = sprintf('%s%s',
@@ -159,15 +160,16 @@ currently our package supports GuzzleRequet and PhpCurlClass with some abstracti
 
 ### Methods
 ```php
-    setClient((new Client));        #Set the Client you want to use, if you don't use this method, Guzzle will be set as default.
-    basicAuth($usernam, $password); #Basic authentication, if not used, the default noAuth will be used.
-    setHeader($headers)             #Receives an array of headers from the request if necessary.
-    setUri($uri)                    #Get the api host with the slash at the end.
-    setData($uri)                   #Receives an array of data if the method needs to pass some value.
-    get($url)                       #Receives the route for which you want to fetch data.
-    post($url)                      #Get the route for which you want to create data.
-    put($url)                       #Get the route for which you want to update data.
-    delete($url)                    #Get the route for which you want to delete data.
+    setClient((new Client));         #Set the Client you want to use, if you don't use this method, Guzzle will be set as default.
+    basicAuth($username, $password); #Basic authentication, if not used, the default noAuth will be used.
+    bearerTokenAuth($token);         #Bearer token authentication, if not used, the default noAuth will be used.
+    setHeader($headers)              #Receives an array of headers from the request if necessary.
+    setUri($uri)                     #Get the api host with the slash at the end.
+    setData($uri)                    #Receives an array of data if the method needs to pass some value.
+    get($url)                        #Receives the route for which you want to fetch data.
+    post($url)                       #Get the route for which you want to create data.
+    put($url)                        #Get the route for which you want to update data.
+    delete($url)                     #Get the route for which you want to delete data.
 ```
 You can check the documentation for examples of using Guzzle and PHPCurlClass.
 

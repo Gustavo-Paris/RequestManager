@@ -4,7 +4,7 @@ namespace RequestManager\examples;
 
 use Exception;
 use RequestManager\RequestRunner;
-use RequestManager\Requests\GuzzleRequest;
+use RequestManager\Http\GuzzleRequest;
 
 class CallExampleWithoutTryCacthGuzzle
 {
