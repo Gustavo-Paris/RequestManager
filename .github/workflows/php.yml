@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP Build and Test
 
 on:
   push:
@@ -37,3 +37,13 @@ jobs:
 
     # - name: Run test suite
     #   run: composer run-script test
+  phpunit:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: composer install
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit
