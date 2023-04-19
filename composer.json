@@ -6,10 +6,19 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "scripts": {
-    "phpcompatibility-version7-3" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3 --extensions=php",
-    "phpcompatibility-version7-4" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4 --extensions=php",
-    "phpcompatibility-version8-0" : "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0 --extensions=php",
-    "phpcs-security" : "./vendor/bin/phpcs --extensions=php --standard=ruleset-security-audit.xml "
+    "phpcompatibility-version7-3": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3 --extensions=php",
+    "phpcompatibility-version7-4": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4 --extensions=php",
+    "phpcompatibility-version8-0": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0 --extensions=php",
+    "phpcs-security": "./vendor/bin/phpcs --extensions=php --standard=ruleset-security-audit.xml "
+  },
+  "archive": {
+    "exclude": [
+      "tests",
+      ".gitignore",
+      "docs",
+      ".github",
+      "phpunit.xml"
+    ]
   },
   "config": {
     "platform": {
@@ -38,6 +47,7 @@
   },
   "autoload": {
     "psr-4": {
+      "RequestManager\\Examples\\": "examples",
       "RequestManager\\": "src",
       "RequestManager\\Tests\\": "tests"
     }

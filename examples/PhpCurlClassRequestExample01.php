@@ -1,9 +1,9 @@
 <?php
 
-namespace RequestManager\examples;
+namespace RequestManager\Examples;
 
-use RequestManager\Interfaces\RequestClient;
 use RequestManager\HttpRequest;
+use RequestManager\Interfaces\RequestClient;
 
 /**
  * Template File Doc Comment

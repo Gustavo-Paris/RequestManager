@@ -1,6 +1,6 @@
 <?php
 
-namespace RequestManager\examples;
+namespace RequestManager\Examples;
 
 use RequestManager\HttpRequest;
 

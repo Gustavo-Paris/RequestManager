@@ -1,10 +1,9 @@
 <?php
 
-namespace RequestManager\examples;
+namespace RequestManager\Examples;
 
-use Exception;
-use RequestManager\HttpRequest;
 use RequestManager\Http\GuzzleRequest;
+use RequestManager\HttpRequest;
 
 /**
  * Template File Doc Comment
@@ -36,7 +35,7 @@ class CallExampleWithoutTryCacthGuzzle
         return (new HttpRequest())
             ->setClient(new GuzzleRequest())
             ->basicAuth($data['username'], $data['password'])
-            ->setHeader(['ixcsoft' => 'listar'])
+            ->setHeader(['ixcsoft' => ''])
             ->setUri($data['url'])
             ->get($url);
     }
