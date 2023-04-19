@@ -3,12 +3,28 @@
 namespace RequestManager\examples;
 
 use Exception;
-use RequestManager\RequestRunner;
+use RequestManager\HttpRequest;
 use RequestManager\Http\GuzzleRequest;
 
+/**
+ * Template File Doc Comment
+ *
+ * PHP version 7.3
+ *
+ * @category Example of request
+ * @package  CallExampleWithoutTryCacthGuzzle.php
+ * @author   Author <wbsartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class CallExampleWithoutTryCacthGuzzle
 {
     private const UNITS_LIST = 'unidades';
+
+    /**
+     * @param array $data
+     * @return array
+     */
     public function request(array $data)
     {
         $url = sprintf(
@@ -17,7 +33,7 @@ class CallExampleWithoutTryCacthGuzzle
             self::UNITS_LIST
         );
 
-        return (new RequestRunner())
+        return (new HttpRequest())
             ->setClient(new GuzzleRequest())
             ->basicAuth($data['username'], $data['password'])
             ->setHeader(['ixcsoft' => 'listar'])

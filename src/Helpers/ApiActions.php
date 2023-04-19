@@ -2,6 +2,18 @@
 
 namespace RequestManager\Helpers;
 
+/**
+ * Template File Doc Comment
+ *
+ * PHP version 7.3
+ *
+ * @category Class of constants
+ * @package  ApiActions.php
+ * @author   Author <wesley.sartori@ixcsoft.com.br>
+ * @author   Author <gustavo.paris@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class ApiActions
 {
     /** @const GET */

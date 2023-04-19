@@ -7,6 +7,18 @@ use Exception;
 use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 
+/**
+ * Template File Doc Comment
+ *
+ * PHP version 7.3
+ *
+ * @category Class PhpCurlClass Client Request
+ * @package  PhpCurlClassRequest.php
+ * @author   Author <wesley.sartori@ixcsoft.com.br>
+ * @author   Author <gustavo.paris@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class PhpCurlClassRequest implements RequestClient
 {
     /** @var string */

@@ -2,10 +2,18 @@
 
 namespace RequestManager\examples;
 
-use RequestManager\RequestRunner;
+use RequestManager\HttpRequest;
 
 /**
- * Exemplo de requisição com client padrão utilizando basicAuth
+ * Template File Doc Comment
+ *
+ * PHP version 7.3
+ *
+ * @category Example
+ * @package  GuzzleExample01.php
+ * @author   Author <wesley.sartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
  */
 class GuzzleExample01
 {
@@ -22,9 +30,10 @@ class GuzzleExample01
         string $router,
         string $username,
         string $password,
-        array $header
-    ) {
-        $return = (new RequestRunner())
+        array  $header
+    )
+    {
+        $return = (new HttpRequest())
             ->basicAuth($username, $password)
             ->setHeader($header)
             ->setUri($uri)

@@ -3,7 +3,7 @@
 namespace RequestManager\examples;
 
 use RequestManager\Interfaces\RequestClient;
-use RequestManager\RequestRunner;
+use RequestManager\HttpRequest;
 
 /**
  *
@@ -27,7 +27,7 @@ class GuzzleExample03
         string $password,
         array $header
     ) {
-        $return = (new RequestRunner())
+        $return = (new HttpRequest())
             ->setClient($requestClient)
             ->basicAuth($username, $password)
             ->setHeader($header)
