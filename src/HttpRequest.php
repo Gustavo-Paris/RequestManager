@@ -3,6 +3,7 @@
 namespace RequestManager;
 
 use RequestManager\Helpers\ApiActions;
+use RequestManager\Helpers\Result;
 use RequestManager\Interfaces\RequestClient;
 use RequestManager\Http\GuzzleRequest;
 
@@ -47,6 +48,8 @@ class HttpRequest
      */
     private $data;
 
+    private $ssl = [];
+
     /**
      * @param RequestClient|null $client
      * @return HttpRequest
@@ -82,7 +85,7 @@ class HttpRequest
      * @param array $header
      * @return $this
      */
-    public function setHeader(array $header): HttpRequest
+    public function setHeader(array $header = []): HttpRequest
     {
         $this->header = $header;
         return $this;
@@ -112,7 +115,7 @@ class HttpRequest
      * @param string $route
      * @return array
      */
-    public function post(string $route): array
+    public function post(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::POST);
@@ -122,7 +125,7 @@ class HttpRequest
      * @param string $route
      * @return array
      */
-    public function get(string $route)
+    public function get(string $route = '')
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::GET);
@@ -132,7 +135,7 @@ class HttpRequest
      * @param string $route
      * @return array
      */
-    public function put(string $route): array
+    public function put(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::PUT);
@@ -142,7 +145,7 @@ class HttpRequest
      * @param string $route
      * @return array
      */
-    public function delete(string $route): array
+    public function delete(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
         return $this->run(ApiActions::DELETE);
@@ -152,7 +155,7 @@ class HttpRequest
      * @param string $method
      * @return array
      */
-    public function run(string $method)
+    private function run(string $method)
     {
         if (is_null($this->client)) {
             $this->setClient();
@@ -166,6 +169,31 @@ class HttpRequest
         $this->client->setUri($this->uri);
         $this->client->setHeader($this->header);
 
+        if($this->getSsl()) {
+            if(method_exists($this->client, 'setSsl')) {
+                $this->client->setSSL($this->ssl);
+            }
+        }
+        
         return $this->client->request($method);
+    }
+
+    /**
+     * @return false[]
+     */
+    private function getSsl(): array
+    {
+        return $this->ssl;
+    }
+
+
+    /**
+     * @param false[] $ssl
+     * @return HttpRequest
+     */
+    public function setSsl(array $ssl): HttpRequest
+    {
+        $this->ssl = $ssl;
+        return $this;
     }
 }

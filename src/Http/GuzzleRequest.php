@@ -23,6 +23,8 @@ use RequestManager\Interfaces\RequestClient;
  */
 class GuzzleRequest implements RequestClient
 {
+    /** Options for making requests via post */
+    private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
     /** @var string */
     private $uri = '';
     /** @var array|null */
@@ -33,8 +35,8 @@ class GuzzleRequest implements RequestClient
     private $auth = null;
     /** @var array|null */
     private $options = null;
-    /** Options for making requests via post */
-    private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
+    /** @var string */
+    private $ssl = [];
 
     /**
      * @param array|null $auth
@@ -74,26 +76,28 @@ class GuzzleRequest implements RequestClient
 
     /**
      * @param string $method
-     * @return mixed
+     * @return array|mixed
      * @throws GuzzleException
      */
     public function request(string $method)
     {
-        $this->setOptions();
-        //TODO: parametros verify desabilita SSL
-        $client = new Client(['verify' => false]);
+        try {
+            $this->setOptions();
 
-        $response = $client
-            ->request(
-                $method,
-                $this->uri,
-                $this->options,
-            );
+            $client = new Client($this->getSsl());
 
-        return json_decode(
-            $response->getBody()->getContents(),
-            true
-        );
+            $response = $client
+                ->request(
+                    $method,
+                    $this->uri,
+                    $this->options,
+                );
+
+            return $this->handleResponse($response);
+
+        } catch (ClientException $clientException) {
+            return $this->handleException($clientException);
+        }
     }
 
     /**
@@ -130,31 +134,44 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @param $response
+     * @param $exception
      * @return array
      * @throws Exception
      */
-    public function handleException($response): array
+    public function handleException($exception): array
     {
-        if (!in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
-            throw new ClientException('Error: ', $response, $response);
-        }
+        return [
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage()
+        ];
     }
 
     /**
      * @param $response
-     * @return array|mixed
-     * @throws Exception
+     * @return array
      */
-    private function handleResponse($response)
+    private function handleResponse($response): array
     {
-        if (in_array($response->getStatusCode(), ApiActions::HTTP_CODE_SUCCESS)) {
-            return json_decode(
-                $response->getBody()->getContents(),
-                true
-            );
-        }
+        return [
+            'code' => $response->getStatusCode(),
+            'response' => json_decode($response->getBody()->getContents(), true)
+        ];
+    }
 
-        return $this->handleException($response);
+    /**
+     * @return array|string
+     */
+    public function getSsl()
+    {
+        return $this->ssl;
+    }
+
+    /**
+     * @param array|string $ssl
+     * @return void
+     */
+    public function setSsl($ssl): void
+    {
+        $this->ssl = $ssl;
     }
 }
