@@ -48,7 +48,7 @@ class HttpRequest
      */
     private $data;
 
-    private $ssl = [];
+    private $ssl = false;
 
     /**
      * @param RequestClient|null $client
@@ -82,10 +82,18 @@ class HttpRequest
     }
 
     /**
+     * @return array|null
+     */
+    public function getHeader(): ?array
+    {
+        return $this->header;
+    }
+
+    /**
      * @param array $header
      * @return $this
      */
-    public function setHeader(array $header = []): HttpRequest
+    public function setHeader(array $header = ['Content-type' => 'application/json']): HttpRequest
     {
         $this->header = $header;
         return $this;
@@ -167,7 +175,10 @@ class HttpRequest
 
         $this->client->setAuth($this->auth);
         $this->client->setUri($this->uri);
-        $this->client->setHeader($this->header);
+
+        if($this->header) {
+            $this->client->setHeader($this->header);
+        }
 
         if($this->getSsl()) {
             if(method_exists($this->client, 'setSsl')) {
@@ -179,19 +190,19 @@ class HttpRequest
     }
 
     /**
-     * @return false[]
+     * @return bool
      */
-    private function getSsl(): array
+    private function getSsl(): bool
     {
         return $this->ssl;
     }
 
 
     /**
-     * @param false[] $ssl
-     * @return HttpRequest
+     * @param bool $ssl
+     * @return $this
      */
-    public function setSsl(array $ssl): HttpRequest
+    public function setSsl(bool $ssl): HttpRequest
     {
         $this->ssl = $ssl;
         return $this;

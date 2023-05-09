@@ -35,7 +35,7 @@ class GuzzleRequest implements RequestClient
     private $auth = null;
     /** @var array|null */
     private $options = null;
-    /** @var string */
+    /** @var bool */
     private $ssl = [];
 
     /**
@@ -159,7 +159,7 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @return array|string
+     * @return array|bool
      */
     public function getSsl()
     {
@@ -167,11 +167,15 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @param array|string $ssl
+     * @param array|string $flag
      * @return void
      */
-    public function setSsl($ssl): void
+    public function setSsl($flag = false): void
     {
-        $this->ssl = $ssl;
+        $this->ssl = [];
+
+        if($flag) {
+            $this->ssl = ['verify' => false];
+        }
     }
 }

@@ -31,6 +31,8 @@ class PhpCurlClassRequest implements RequestClient
     private $auth = null;
     /** @var Curl */
     private $client;
+    /** @var string */
+    private $ssl = [];
 
     /**
      * @param array|null $auth
@@ -70,30 +72,25 @@ class PhpCurlClassRequest implements RequestClient
 
     /**
      * @param string $method
-     * @return mixed
-     * @throws Exception
+     * @return array
      */
-    public function request(string $method): mixed
+    public function request(string $method)
     {
-        $this->setClient((new Curl()));
-        $this->setPrivateOptions();
+        try {
+            $this->setClient();
+            $this->setPrivateOptions();
 
-        $this->getClient()->setOpt(CURLOPT_SSL_VERIFYPEER, 0);
-        $this->getClient()->setOpt(CURLOPT_SSL_VERIFYHOST, 0);
-        //TODO: verificar uma maneira melhor de setar os metodos que vem do parametro
+            $this->getClient()->$method($this->uri, json_encode($this->data));
 
-        $this->getClient()->$method($this->uri, json_encode($this->data));
+            if ($this->getClient()->error) {
+                $this->handleException($this->getClient());
+            }
 
-        if ($this->getClient()->error) {
-            $this->handleException($this->getClient());
+            return $this->handleResponse($this->getClient());
+
+        } catch (Exception $exception) {
+            return $this->handleException($exception);
         }
-
-        echo json_encode([
-            'code' => $this->getClient()->getHttpStatusCode(),
-            'message' => $this->getClient()->response,
-        ]);
-
-        return [];
     }
 
     /**
@@ -110,31 +107,66 @@ class PhpCurlClassRequest implements RequestClient
     }
 
     /**
-     * @param $client
+     * @param $response
      * @return array
-     * @throws Exception
      */
-    public function handleException($client): array
+    private function handleResponse($response): array
     {
-        if (!in_array($client->errorCode, ApiActions::HTTP_CODE_SUCCESS)) {
-            throw new Exception($client->errorMessage);
-        }
-        return [];
+        return [
+            'code' => $response->getHttpStatusCode(),
+            'response' => $response->response
+        ];
+    }
+
+    /**
+     * @param $response
+     * @return array
+     */
+    public function handleException($response): array
+    {
+        return [
+            'code' => $response->getHttpStatusCode(),
+            'response' => $response->response,
+        ];
     }
 
     /**
      * @return Curl
      */
-    public function getClient(): Curl
+    public function getClient()
     {
         return $this->client;
     }
 
     /**
-     * @param Curl $client
+     * @return void
      */
-    public function setClient(Curl $client): void
+    public function setClient(): void
     {
-        $this->client = $client;
+        $this->client = new Curl();
+    }
+
+    /**
+     * @return array
+     */
+    public function getSsl()
+    {
+        return $this->ssl;
+    }
+
+    /**
+     * @param array|string $flag
+     * @return void
+     */
+    public function setSsl($flag = false): array
+    {
+        $this->ssl = [];
+
+        if($flag) {
+            return [
+                'CURLOPT_SSL_VERIFYPEER' => 0,
+                'CURLOPT_SSL_VERIFYHOST' => 0,
+            ];
+        }
     }
 }
