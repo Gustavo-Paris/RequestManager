@@ -6,8 +6,12 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use RequestManager\Helpers\ApiActions;
-use RequestManager\Interfaces\RequestClient;
+use RequestManager\Interfaces\InterfaceAuth;
+use RequestManager\Interfaces\InterfaceData;
+use RequestManager\Interfaces\InterfaceHeader;
+use RequestManager\Interfaces\InterfaceRequest;
+use RequestManager\Interfaces\InterfaceSSL;
+use RequestManager\Interfaces\InterfaceUri;
 
 /**
  * Template File Doc Comment
@@ -21,7 +25,13 @@ use RequestManager\Interfaces\RequestClient;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://packagist/gustavo-paris/request-manager
  */
-class GuzzleRequest implements RequestClient
+class GuzzleRequestAdapter implements
+    InterfaceRequest,
+    InterfaceHeader,
+    InterfaceUri,
+    InterfaceAuth,
+    InterfaceSSL,
+    InterfaceData, \RequestManager\Interfaces\RequestClient
 {
     /** Options for making requests via post */
     private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
@@ -76,10 +86,10 @@ class GuzzleRequest implements RequestClient
 
     /**
      * @param string $method
-     * @return array|mixed
+     * @return array
      * @throws GuzzleException
      */
-    public function request(string $method)
+    public function request(string $method): array
     {
         try {
             $this->setOptions();
@@ -101,9 +111,9 @@ class GuzzleRequest implements RequestClient
     }
 
     /**
-     * @return array|void|null
+     * @return void
      */
-    private function setOptions()
+    private function setOptions(): void
     {
         if (!is_null($this->header)) {
             $this->options['headers'] = $this->header;
@@ -129,7 +139,6 @@ class GuzzleRequest implements RequestClient
                 }
             }
 
-            return $this->options;
         }
     }
 

@@ -2,8 +2,8 @@
 
 namespace RequestManager\Examples;
 
-use RequestManager\Http\GuzzleRequest;
-use RequestManager\HttpRequest;
+use RequestManager\Http\GuzzleRequestAdapter;
+use RequestManager\HttpRequestAdapter;
 
 /**
  * Template File Doc Comment
@@ -32,8 +32,8 @@ class CallExampleWithoutTryCacthGuzzle
             self::UNITS_LIST
         );
 
-        return (new HttpRequest())
-            ->setClient(new GuzzleRequest())
+        return (new HttpRequestAdapter())
+            ->setClient(new GuzzleRequestAdapter())
             ->basicAuth($data['username'], $data['password'])
             ->setHeader(['ixcsoft' => ''])
             ->setUri($data['url'])

@@ -2,7 +2,7 @@
 
 namespace RequestManager\Examples;
 
-use RequestManager\HttpRequest;
+use RequestManager\HttpRequestAdapter;
 
 /**
  * Template File Doc Comment
@@ -29,7 +29,7 @@ class GuzzleExample02
         array  $header
     )
     {
-        $return = (new HttpRequest())
+        $return = (new HttpRequestAdapter())
             ->setHeader($header)
             ->setUri($uri)
             ->get('/' . $router);

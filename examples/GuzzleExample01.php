@@ -2,7 +2,7 @@
 
 namespace RequestManager\Examples;
 
-use RequestManager\HttpRequest;
+use RequestManager\HttpRequestAdapter;
 
 /**
  * Template File Doc Comment
@@ -33,7 +33,7 @@ class GuzzleExample01
         array  $header
     )
     {
-        $return = (new HttpRequest())
+        $return = (new HttpRequestAdapter())
             ->basicAuth($username, $password)
             ->setHeader($header)
             ->setUri($uri)

@@ -24,7 +24,7 @@ currently our package supports GuzzleRequet and PhpCurlClass with some abstracti
 
 ```php
     use RequestManager\RequestRunner;
-    use RequestManager\Http\GuzzleRequest;
+    use RequestManager\Http\GuzzleRequestAdapter;
     
     try {
         $url = sprintf('%s%s',
@@ -32,7 +32,7 @@ currently our package supports GuzzleRequet and PhpCurlClass with some abstracti
         );
 
         $response = (new RequestRunner())
-            ->setClient(new GuzzleRequest())
+            ->setClient(new GuzzleRequestAdapter())
             ->basicAuth($username, $password)
             ->setHeader($headers)
             ->setUri($uri)

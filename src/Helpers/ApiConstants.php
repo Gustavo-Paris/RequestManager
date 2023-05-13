@@ -14,7 +14,7 @@ namespace RequestManager\Helpers;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://packagist/gustavo-paris/request-manager
  */
-class ApiActions
+class ApiConstants
 {
     /** @const GET */
     public const GET = 'get';

@@ -4,7 +4,6 @@ namespace RequestManager\Http;
 
 use Curl\Curl;
 use Exception;
-use RequestManager\Helpers\ApiActions;
 use RequestManager\Interfaces\RequestClient;
 
 /**
@@ -19,7 +18,7 @@ use RequestManager\Interfaces\RequestClient;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://packagist/gustavo-paris/request-manager
  */
-class PhpCurlClassRequest implements RequestClient
+class PhpCCRequestAdapter implements RequestClient
 {
     /** @var string */
     private $uri = '';
@@ -74,7 +73,7 @@ class PhpCurlClassRequest implements RequestClient
      * @param string $method
      * @return array
      */
-    public function request(string $method)
+    public function request(string $method): array
     {
         try {
             $this->setClient();
@@ -122,7 +121,7 @@ class PhpCurlClassRequest implements RequestClient
      * @param $response
      * @return array
      */
-    public function handleException($response): array
+    private function handleException($response): array
     {
         return [
             'code' => $response->getHttpStatusCode(),

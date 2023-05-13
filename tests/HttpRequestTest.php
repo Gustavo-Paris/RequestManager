@@ -3,8 +3,8 @@
 namespace RequestManager\Tests;
 
 use PHPUnit\Framework\TestCase;
-use RequestManager\HttpRequest;
-use RequestManager\Http\GuzzleRequest;
+use RequestManager\HttpRequestAdapter;
+use RequestManager\Http\GuzzleRequestAdapter;
 
 /**
  * Template File Doc Comment
@@ -20,7 +20,7 @@ use RequestManager\Http\GuzzleRequest;
 class HttpRequestTest extends TestCase
 {
     /**
-     * @var HttpRequest
+     * @var HttpRequestAdapter
      */
     private $httpRequest;
 
@@ -29,9 +29,9 @@ class HttpRequestTest extends TestCase
      */
     public function testSetClient(): void
     {
-        $this->httpRequest = new HttpRequest();
-        $actual = $this->httpRequest->setClient((new GuzzleRequest()));
-        $this->assertInstanceOf(HttpRequest::class, $actual);
+        $this->httpRequest = new HttpRequestAdapter();
+        $actual = $this->httpRequest->setClient((new GuzzleRequestAdapter()));
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
     /**
@@ -39,9 +39,9 @@ class HttpRequestTest extends TestCase
      */
     public function testSetHeaderAuth(): void
     {
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $actual = $this->httpRequest->setHeader(['header' => 'teste']);
-        $this->assertInstanceOf(httpRequest::class, $actual);
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
     /**
@@ -49,9 +49,9 @@ class HttpRequestTest extends TestCase
      */
     public function testBasicAuth(): void
     {
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $actual = $this->httpRequest->basicAuth('test', 'test');
-        $this->assertInstanceOf(httpRequest::class, $actual);
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
     /**
@@ -59,9 +59,9 @@ class HttpRequestTest extends TestCase
      */
     public function testBearerToken(): void
     {
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $actual = $this->httpRequest->bearerTokenAuth('02SAdasd0adsad');
-        $this->assertInstanceOf(httpRequest::class, $actual);
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
     /**
@@ -69,9 +69,9 @@ class HttpRequestTest extends TestCase
      */
     public function testSetUri(): void
     {
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $actual = $this->httpRequest->setUri('https://api.com.br');
-        $this->assertInstanceOf(httpRequest::class, $actual);
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
     /**
@@ -79,9 +79,9 @@ class HttpRequestTest extends TestCase
      */
     public function testSetData(): void
     {
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $actual = $this->httpRequest->setData(['data' => []]);
-        $this->assertInstanceOf(httpRequest::class, $actual);
+        $this->assertInstanceOf(HttpRequestAdapter::class, $actual);
     }
 
 
@@ -90,12 +90,12 @@ class HttpRequestTest extends TestCase
      */
     public function testRun(): void
     {
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return [];
         });
 
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $this->httpRequest->setClient($guzzleRequest);
         $this->httpRequest->basicAuth('user', 'pass');
         $this->httpRequest->setUri('https://api.com.br/');
@@ -111,12 +111,12 @@ class HttpRequestTest extends TestCase
      */
     public function testRunIsNull(): void
     {
-        $httpRequestMock = $this->createMock(httpRequest::class);
+        $httpRequestMock = $this->createMock(HttpRequestAdapter::class);
         $httpRequestMock->method('setClient')->willReturnCallback(function () {
-            return new GuzzleRequest();
+            return new GuzzleRequestAdapter();
         });
 
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return null;
         });
@@ -134,14 +134,14 @@ class HttpRequestTest extends TestCase
      */
     public function testPost(): void
     {
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'data' => 'data'
             ]];
         });
 
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $this->httpRequest->setClient($guzzleRequest);
         $this->httpRequest->basicAuth('user', 'pass');
         $this->httpRequest->setUri('https://api.com.br/');
@@ -160,7 +160,7 @@ class HttpRequestTest extends TestCase
      */
     public function testGet(): void
     {
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
@@ -169,7 +169,7 @@ class HttpRequestTest extends TestCase
             ]];
         });
 
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $this->httpRequest->setClient($guzzleRequest);
         $this->httpRequest->basicAuth('user', 'pass');
         $this->httpRequest->setUri('https://api.com.br/');
@@ -190,7 +190,7 @@ class HttpRequestTest extends TestCase
      */
     public function testPut(): void
     {
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
@@ -198,7 +198,7 @@ class HttpRequestTest extends TestCase
             ]];
         });
 
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $this->httpRequest->setClient($guzzleRequest);
         $this->httpRequest->basicAuth('user', 'pass');
         $this->httpRequest->setUri('https://api.com.br/');
@@ -218,7 +218,7 @@ class HttpRequestTest extends TestCase
      */
     public function testDelete(): void
     {
-        $guzzleRequest = $this->createMock(GuzzleRequest::class);
+        $guzzleRequest = $this->createMock(GuzzleRequestAdapter::class);
         $guzzleRequest->method('request')->willReturnCallback(function () {
             return ['response' => [
                 'code' => 200,
@@ -226,7 +226,7 @@ class HttpRequestTest extends TestCase
             ]];
         });
 
-        $this->httpRequest = new HttpRequest();
+        $this->httpRequest = new HttpRequestAdapter();
         $this->httpRequest->setClient($guzzleRequest);
         $this->httpRequest->basicAuth('user', 'pass');
         $this->httpRequest->setUri('https://api.com.br/');

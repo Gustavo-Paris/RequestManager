@@ -138,7 +138,7 @@ CallExampleWithoutTryCacthGuzzle has a request method which calls our client in 
     
     use Exception;
     use RequestManager\RequestRunner;
-    use RequestManager\Http\GuzzleRequest;
+    use RequestManager\Http\GuzzleRequestAdapter;
     
     class CallExampleWithoutTryCacthGuzzle
     {
@@ -154,7 +154,7 @@ CallExampleWithoutTryCacthGuzzle has a request method which calls our client in 
             );
     
             return (new RequestRunner())
-                ->setClient(new GuzzleRequest())
+                ->setClient(new GuzzleRequestAdapter())
                 ->basicAuth($data['username'], $data['password'])
                 ->setHeader(['name' => 'value'])
                 ->setUri($data['url'])

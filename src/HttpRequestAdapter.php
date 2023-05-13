@@ -2,10 +2,9 @@
 
 namespace RequestManager;
 
-use RequestManager\Helpers\ApiActions;
-use RequestManager\Helpers\Result;
+use RequestManager\Helpers\ApiConstants;
 use RequestManager\Interfaces\RequestClient;
-use RequestManager\Http\GuzzleRequest;
+use RequestManager\Http\GuzzleRequestAdapter;
 
 /**
  * Template File Doc Comment
@@ -22,7 +21,7 @@ use RequestManager\Http\GuzzleRequest;
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://packagist/gustavo-paris/request-manager
  */
-class HttpRequest
+class HttpRequestAdapter
 {
     /**
      * @var null
@@ -52,11 +51,11 @@ class HttpRequest
 
     /**
      * @param RequestClient|null $client
-     * @return HttpRequest
+     * @return HttpRequestAdapter
      */
-    public function setClient(?RequestClient $client = null): HttpRequest
+    public function setClient(?RequestClient $client = null): HttpRequestAdapter
     {
-        $this->client = !is_null($client) ? $client : new GuzzleRequest();
+        $this->client = !is_null($client) ? $client : new GuzzleRequestAdapter();
         return $this;
     }
 
@@ -65,7 +64,7 @@ class HttpRequest
      * @param string $password
      * @return $this
      */
-    public function basicAuth(string $username, string $password): HttpRequest
+    public function basicAuth(string $username, string $password): HttpRequestAdapter
     {
         $this->auth = [$username, $password];
         return $this;
@@ -75,7 +74,7 @@ class HttpRequest
      * @param string $token
      * @return $this
      */
-    public function bearerTokenAuth(string $token): HttpRequest
+    public function bearerTokenAuth(string $token): HttpRequestAdapter
     {
         $this->auth = ['Authorization' => 'Bearer ' . $token];
         return $this;
@@ -93,7 +92,7 @@ class HttpRequest
      * @param array $header
      * @return $this
      */
-    public function setHeader(array $header = ['Content-type' => 'application/json']): HttpRequest
+    public function setHeader(array $header = ['Content-type' => 'application/json']): HttpRequestAdapter
     {
         $this->header = $header;
         return $this;
@@ -103,7 +102,7 @@ class HttpRequest
      * @param string $uri
      * @return $this
      */
-    public function setUri(string $uri): HttpRequest
+    public function setUri(string $uri): HttpRequestAdapter
     {
         $this->uri = $uri;
         return $this;
@@ -113,7 +112,7 @@ class HttpRequest
      * @param array $data
      * @return $this
      */
-    public function setData(array $data): HttpRequest
+    public function setData(array $data): HttpRequestAdapter
     {
         $this->data = $data;
         return $this;
@@ -126,7 +125,7 @@ class HttpRequest
     public function post(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
-        return $this->run(ApiActions::POST);
+        return $this->run(ApiConstants::POST);
     }
 
     /**
@@ -136,7 +135,7 @@ class HttpRequest
     public function get(string $route = '')
     {
         $this->uri = $this->uri . $route;
-        return $this->run(ApiActions::GET);
+        return $this->run(ApiConstants::GET);
     }
 
     /**
@@ -146,7 +145,7 @@ class HttpRequest
     public function put(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
-        return $this->run(ApiActions::PUT);
+        return $this->run(ApiConstants::PUT);
     }
 
     /**
@@ -156,14 +155,14 @@ class HttpRequest
     public function delete(string $route = ''): array
     {
         $this->uri = $this->uri . $route;
-        return $this->run(ApiActions::DELETE);
+        return $this->run(ApiConstants::DELETE);
     }
 
     /**
      * @param string $method
      * @return array
      */
-    private function run(string $method)
+    public function run(string $method)
     {
         if (is_null($this->client)) {
             $this->setClient();
@@ -202,7 +201,7 @@ class HttpRequest
      * @param bool $ssl
      * @return $this
      */
-    public function setSsl(bool $ssl): HttpRequest
+    public function setSsl(bool $ssl): HttpRequestAdapter
     {
         $this->ssl = $ssl;
         return $this;
