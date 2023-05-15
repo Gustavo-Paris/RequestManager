@@ -42,10 +42,7 @@
   "require": {
     "php": ">=7.3",
     "guzzlehttp/guzzle": "^7.5.0",
-    "ext-json": "*",
-    "php-curl-class/php-curl-class": "^9.14",
-    "ext-http": "*",
-    "ext-curl": "*"
+    "php-curl-class/php-curl-class": "^9.14"
   },
   "autoload": {
     "psr-4": {
