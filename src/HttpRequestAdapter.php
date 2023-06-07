@@ -175,16 +175,16 @@ class HttpRequestAdapter
         $this->client->setAuth($this->auth);
         $this->client->setUri($this->uri);
 
-        if($this->header) {
+        if ($this->header) {
             $this->client->setHeader($this->header);
         }
 
-        if($this->getSsl()) {
-            if(method_exists($this->client, 'setSsl')) {
+        if ($this->getSsl()) {
+            if (method_exists($this->client, 'setSsl')) {
                 $this->client->setSSL($this->ssl);
             }
         }
-        
+
         return $this->client->request($method);
     }
 

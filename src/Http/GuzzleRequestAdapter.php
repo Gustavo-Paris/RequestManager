@@ -31,7 +31,7 @@ class GuzzleRequestAdapter implements
     InterfaceUri,
     InterfaceAuth,
     InterfaceSSL,
-    InterfaceData, \RequestManager\Interfaces\RequestClient
+    InterfaceData
 {
     /** Options for making requests via post */
     private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
@@ -183,7 +183,7 @@ class GuzzleRequestAdapter implements
     {
         $this->ssl = [];
 
-        if($flag) {
+        if ($flag) {
             $this->ssl = ['verify' => false];
         }
     }

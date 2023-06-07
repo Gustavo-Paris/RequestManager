@@ -161,7 +161,7 @@ class PhpCCRequestAdapter implements RequestClient
     {
         $this->ssl = [];
 
-        if($flag) {
+        if ($flag) {
             return [
                 'CURLOPT_SSL_VERIFYPEER' => 0,
                 'CURLOPT_SSL_VERIFYHOST' => 0,
