@@ -12,6 +12,7 @@ use RequestManager\Interfaces\InterfaceHeader;
 use RequestManager\Interfaces\InterfaceRequest;
 use RequestManager\Interfaces\InterfaceSSL;
 use RequestManager\Interfaces\InterfaceUri;
+use RequestManager\Interfaces\RequestClient;
 
 /**
  * Template File Doc Comment
@@ -31,7 +32,8 @@ class GuzzleRequestAdapter implements
     InterfaceUri,
     InterfaceAuth,
     InterfaceSSL,
-    InterfaceData
+    InterfaceData,
+    RequestClient
 {
     /** Options for making requests via post */
     private const GUZZLE_ACTIONS_POST = ['form_params', 'body', 'multipart', 'json'];
