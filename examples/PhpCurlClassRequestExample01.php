@@ -34,8 +34,7 @@ class PhpCurlClassRequestExample01
         string        $username,
         string        $password,
         array         $header
-    ): array
-    {
+    ): array {
         return (new HttpRequestAdapter())
             ->setClient($requestClient)
             ->basicAuth($username, $password)

@@ -27,8 +27,7 @@ class GuzzleExample02
         string $uri,
         string $router,
         array  $header
-    )
-    {
+    ) {
         $return = (new HttpRequestAdapter())
             ->setHeader($header)
             ->setUri($uri)

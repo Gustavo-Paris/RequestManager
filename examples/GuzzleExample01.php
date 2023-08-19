@@ -31,8 +31,7 @@ class GuzzleExample01
         string $username,
         string $password,
         array  $header
-    )
-    {
+    ) {
         $return = (new HttpRequestAdapter())
             ->basicAuth($username, $password)
             ->setHeader($header)

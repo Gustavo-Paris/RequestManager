@@ -26,8 +26,7 @@ class GuzzleExample03
         string        $username,
         string        $password,
         array         $header
-    )
-    {
+    ) {
         $return = (new HttpRequestAdapter())
             ->setClient($requestClient)
             ->basicAuth($username, $password)
