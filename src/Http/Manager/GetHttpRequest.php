@@ -27,11 +27,11 @@ class GetHttpRequest implements IHttpRequestType
     private $getHttpRequestGuzzle;
 
     /**
-     * @param string $type
+     * @param IHttpAdapter $type
      * @return IHttpAdapter
      * @throws Exception
      */
-    public function getType(string $type): IHttpAdapter
+    public function getType(IHttpAdapter $type): IHttpAdapter
     {
         $this->getHttpRequestNotFound->next(null);
         $this->getHttpRequestGuzzle->next($this->getHttpRequestNotFound);

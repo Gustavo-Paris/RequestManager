@@ -2,7 +2,8 @@
 
 namespace RequestManager\Examples;
 
-use RequestManager\HttpRequestAdapter;
+use RequestManager\Http\HttpAdapter;
+use RequestManager\Http\HttpConstants;
 
 /**
  * Template File Doc Comment
@@ -20,24 +21,29 @@ class GuzzleExample01
     /**
      * @param string $uri
      * @param string $router
-     * @param string $username
-     * @param string $password
+     * @param array $auth
      * @param array $header
-     * @return false|string
+     * @param array $data example to multipart data {'qtype' => 'param','query' => '0','oper' => '>',
+        'page' => '1','rp' => '20','sortname' => 'param','sortorder' => 'asc'}
+     * @return mixed
      */
     public function exampleRequest(
         string $uri,
         string $router,
-        string $username,
-        string $password,
-        array $header
+        array $auth,
+        array $header,
+        array $data
     ) {
-        $return = (new HttpRequestAdapter())
-            ->basicAuth($username, $password)
-            ->setHeader($header)
-            ->setUri($uri)
-            ->get('/' . $router);
+            $httpAdapter = new HttpAdapter();
+            $httpAdapter
+                ->getClient()
+                ->setAuth([$auth['username'],$auth['password']], $auth['type'])
+                ->setHeader($header)
+                ->setUri($uri);
 
-        return json_encode($return);
+            return $httpAdapter
+                ->getClient()
+                ->setData($data, HttpConstants::BODY_TYPE_MULTIPART)
+                ->post($router);
     }
 }

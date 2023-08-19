@@ -21,11 +21,11 @@ abstract class AbstractGetHttpRequest
     protected $next;
 
     /**
-     * @param string $type
+     * @param IHttpAdapter $type
      * @return IHttpAdapter
      * @throws Exception
      */
-    abstract public function getType(string $type): IHttpAdapter;
+    abstract public function getType(IHttpAdapter $type): IHttpAdapter;
 
     /**
      * @param AbstractGetHttpRequest|null $next

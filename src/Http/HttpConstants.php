@@ -2,6 +2,8 @@
 
 namespace RequestManager\Http;
 
+use RequestManager\Facades\HttpGuzzleRequest;
+
 /**
  * Template File Doc Comment
  * PHP version 7.3
@@ -35,5 +37,8 @@ class HttpConstants
     /**
      * Constant CURL_LIB_GUZZLE for global utility
      */
-    public const CURL_LIB_GUZZLE = 'guzzle';
+    public const BODY_TYPE_MULTIPART = 'multipart';
+    public const BODY_TYPE_JSON = 'json';
+    public const BODY_TYPE_FORM_DATA = 'form_data';
+    public const BODY_TYPE_BODY = 'body';
 }

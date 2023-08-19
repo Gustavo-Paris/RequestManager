@@ -11,6 +11,7 @@ use RequestManager\Interfaces\IBasicAuthenticate;
 use RequestManager\Interfaces\IBearerTokenAuthenticate;
 use RequestManager\Interfaces\IHttpAdapter;
 use RequestManager\Validator\DataRequestValidator;
+use Throwable;
 
 /**
  * Template File Doc Comment
@@ -126,10 +127,9 @@ class HttpGuzzleRequest implements
         }
     }
 
-
     /**
      * @return IHttpAdapter
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function sendMultiCurl(): IHttpAdapter
     {
@@ -276,24 +276,15 @@ class HttpGuzzleRequest implements
     }
 
     /**
-     * @return array
-     */
-    public function getHeaders(): array
-    {
-        return $this->headers;
-    }
-
-    /**
      * @param array $headers
      * @return IHttpAdapter
      */
-    public function setHeaders(array $headers): IHttpAdapter
+    public function setHeader(array $headers): IHttpAdapter
     {
-        if (!empty($headers['headers'])) {
-            $this->headers['headers'] = array_push($headers);
-        } else {
-            $this->headers['headers'] = $headers;
-        }
+        if (!empty($headers)) {
+            $this->options['headers'] = $headers;
+        } 
+
         return $this;
     }
 
@@ -412,5 +403,15 @@ class HttpGuzzleRequest implements
             'code' => $exception->getCode(),
             'message' => $exception->getMessage()
         ];
+    }
+
+    /**
+     * @param bool $flag
+     * @return IHttpAdapter
+     */
+    public function enabledDebug(bool $flag = false): IHttpAdapter
+    {
+        $this->setClient((new Client(['debug' => $flag])));
+        return $this;
     }
 }

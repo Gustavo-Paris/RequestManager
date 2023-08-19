@@ -13,6 +13,8 @@ use RequestManager\Http\Manager\GetHttpRequestGuzzle;
 use RequestManager\Http\Manager\GetHttpRequestNotFound;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use RequestManager\Interfaces\IHttp;
+use RequestManager\Interfaces\IHttpAdapter;
 use RequestManager\Validator\DataRequestValidator;
 
 /**

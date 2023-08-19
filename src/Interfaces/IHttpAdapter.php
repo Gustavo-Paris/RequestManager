@@ -60,17 +60,11 @@ interface IHttpAdapter
      */
     public function setAuth(array $auth = [], string $type = ''): IHttpAdapter;
 
-
-    /**
-     * @return array
-     */
-    public function getHeaders(): array;
-
     /**
      * @param array $headers
      * @return IHttpAdapter
      */
-    public function setHeaders(array $headers): IHttpAdapter;
+    public function setHeader(array $headers): IHttpAdapter;
 
     /**
      * @return IHttpAdapter
@@ -83,4 +77,10 @@ interface IHttpAdapter
      * @return IHttpAdapter
      */
     public function setData(array $data = [], string $type = ''): IHttpAdapter;
+
+    /**
+     * @param bool $flag
+     * @return IHttpAdapter
+     */
+    public function enabledDebug(bool $flag = false): IHttpAdapter;
 }

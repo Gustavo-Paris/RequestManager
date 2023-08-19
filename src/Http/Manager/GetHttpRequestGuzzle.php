@@ -2,6 +2,7 @@
 
 namespace RequestManager\Http\Manager;
 
+use Exception;
 use RequestManager\Abstracts\AbstractGetHttpRequest;
 use RequestManager\Facades\HttpGuzzleRequest;
 use RequestManager\Http\HttpConstants;
@@ -22,9 +23,14 @@ class GetHttpRequestGuzzle extends AbstractGetHttpRequest
      */
     private $httpGuzzleRequest;
 
-    public function getType(string $type): IHttpAdapter
+    /**
+     * @param IHttpAdapter $type
+     * @return IHttpAdapter
+     * @throws Exception
+     */
+    public function getType(IHttpAdapter $type): IHttpAdapter
     {
-        if ($type === HttpConstants::CURL_LIB_GUZZLE) {
+        if ($type === $this->httpGuzzleRequest) {
             return $this->httpGuzzleRequest;
         }
 

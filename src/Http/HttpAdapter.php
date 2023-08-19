@@ -3,6 +3,7 @@
 namespace RequestManager\Http;
 
 use Exception;
+use RequestManager\Facades\HttpGuzzleRequest;
 use RequestManager\Http\Manager\GetHttpRequest;
 use RequestManager\Interfaces\IHttpAdapter;
 use RequestManager\Providers\Providers;
@@ -18,6 +19,9 @@ use Pimple\Container;
  */
 class HttpAdapter
 {
+    public const CLIENTS = [
+        HttpGuzzleRequest::class,
+    ];
     /**
      * @var IHttpAdapter
      */
@@ -29,14 +33,15 @@ class HttpAdapter
     private $container;
 
     /**
-     * @param string $client
+     * @param ?IHttpAdapter $iHttpAdapter
      * @throws Exception
      */
-    public function __construct(string $client = '')
+    public function __construct(?IHttpAdapter $iHttpAdapter = null)
     {
         $this->setContainer((new Container()));
         $this->getContainer()->register((new Providers()));
-        $this->setClient($client);
+        $this->getContainer()->offsetSet(IHttpAdapter::class, $iHttpAdapter);
+        $this->setClient($iHttpAdapter);
     }
 
     /**
@@ -48,13 +53,21 @@ class HttpAdapter
     }
 
     /**
-     * @param string $client{$client => 'guzzle'}
+     * @param ?IHttpAdapter $client
      * @return $this
      * @throws Exception
-     * Atualmente é suportado apenas a biblioteca GuzzleRequest
+     * Atualmente é suportado apenas a biblioteca HttpGuzzleRequest
      */
-    public function setClient(string $client = ''): HttpAdapter
+    public function setClient(?IHttpAdapter $client = null): HttpAdapter
     {
+        if(empty($client)) {
+            $this->getContainer()->offsetSet(IHttpAdapter::class, (new HttpGuzzleRequest()));
+            $this->client = $this->getContainer()
+                ->offsetGet(GetHttpRequest::class)
+                ->getType($this->getContainer()->offsetGet(HttpGuzzleRequest::class));
+            return $this;
+        }
+
         $this->client = $this->getContainer()->offsetGet(GetHttpRequest::class)->getType($client);
         return $this;
     }

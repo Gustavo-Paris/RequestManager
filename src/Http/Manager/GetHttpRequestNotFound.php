@@ -21,7 +21,11 @@ class GetHttpRequestNotFound extends AbstractGetHttpRequest
      */
     private $httpGuzzleRequest;
 
-    public function getType(string $type): IHttpAdapter
+    /**
+     * @param IHttpAdapter $type
+     * @return IHttpAdapter
+     */
+    public function getType(IHttpAdapter $type): IHttpAdapter
     {
         return $this->httpGuzzleRequest;
     }

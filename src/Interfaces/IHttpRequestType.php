@@ -13,8 +13,8 @@ namespace RequestManager\Interfaces;
 interface IHttpRequestType
 {
     /**
-     * @param string $type
+     * @param IHttpAdapter $type
      * @return mixed
      */
-    public function getType(string $type): IHttpAdapter;
+    public function getType(IHttpAdapter $type): IHttpAdapter;
 }
