@@ -30,7 +30,7 @@ class GuzzleExample01
         string $router,
         string $username,
         string $password,
-        array  $header
+        array $header
     ) {
         $return = (new HttpRequestAdapter())
             ->basicAuth($username, $password)

@@ -4,13 +4,20 @@ namespace RequestManager\Validator;
 
 use RequestManager\Exception\HttpException;
 
+/**
+ * Template File Doc Comment
+ * PHP version 7.3
+ * @package  RequestManager
+ * @author   Author <wbsartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class DataRequestValidator
 {
     /**
      * @var HttpException
      */
     private $httpException;
-
 
     /**
      * @param array $data

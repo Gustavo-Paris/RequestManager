@@ -12,12 +12,19 @@ use RequestManager\Interfaces\IBearerTokenAuthenticate;
 use RequestManager\Interfaces\IHttpAdapter;
 use RequestManager\Validator\DataRequestValidator;
 
+/**
+ * Template File Doc Comment
+ * PHP version 7.3
+ * @package  RequestManager
+ * @author   Author <wbsartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class HttpGuzzleRequest implements
     IHttpAdapter,
     IBasicAuthenticate,
     IBearerTokenAuthenticate
 {
-
     /**
      * @var array
      */
@@ -65,6 +72,9 @@ class HttpGuzzleRequest implements
         'bearerToken' => 'bearerTokenAuthenticate',
     ];
 
+    /**
+     * Constant to body type functions
+     */
     private const BODY_TYPES = [
         'multipart' => 'handleMultipart',
         'json' => 'handleJson',
@@ -117,6 +127,10 @@ class HttpGuzzleRequest implements
     }
 
 
+    /**
+     * @return IHttpAdapter
+     * @throws \Throwable
+     */
     public function sendMultiCurl(): IHttpAdapter
     {
         $this->httpGuzzleMultiRequest->setClient($this->getClient());
@@ -152,7 +166,7 @@ class HttpGuzzleRequest implements
      * @return array
      * @throws GuzzleException
      */
-    public function get(string $route, bool $async = false)
+    public function get(string $route, bool $async = false): array
     {
         return $this->request(HttpConstants::GET, $route, $async);
     }
@@ -163,7 +177,7 @@ class HttpGuzzleRequest implements
      * @return array
      * @throws GuzzleException
      */
-    public function post(string $route, bool $async = false)
+    public function post(string $route, bool $async = false): array
     {
         return $this->request(HttpConstants::POST, $route, $async);
     }
@@ -174,7 +188,7 @@ class HttpGuzzleRequest implements
      * @return array
      * @throws GuzzleException
      */
-    public function put(string $route, bool $async = false)
+    public function put(string $route, bool $async = false): array
     {
         return $this->request(HttpConstants::POST, $route, $async);
     }
@@ -185,7 +199,7 @@ class HttpGuzzleRequest implements
      * @return array
      * @throws GuzzleException
      */
-    public function delete(string $route, bool $async = false)
+    public function delete(string $route, bool $async = false): array
     {
         return $this->request(HttpConstants::POST, $route, $async);
     }

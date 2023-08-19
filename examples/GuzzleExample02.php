@@ -26,7 +26,7 @@ class GuzzleExample02
     public function exampleRequest(
         string $uri,
         string $router,
-        array  $header
+        array $header
     ) {
         $return = (new HttpRequestAdapter())
             ->setHeader($header)

@@ -2,8 +2,16 @@
 
 namespace RequestManager\Http\Auth;
 
-use IXCRequest\Interfaces\IAuthInterface;
+use RequestManager\Interfaces\IAuthInterface;
 
+/**
+ * Template File Doc Comment
+ * PHP version 7.3
+ * @package  RequestManager
+ * @author   Author <wbsartori@ixcsoft.com.br>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://packagist/gustavo-paris/request-manager
+ */
 class BearerTokenAuthenticate implements IAuthInterface
 {
     /**

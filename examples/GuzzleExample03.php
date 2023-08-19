@@ -21,11 +21,11 @@ class GuzzleExample03
      */
     public function exampleRequest(
         RequestClient $requestClient,
-        string        $uri,
-        string        $router,
-        string        $username,
-        string        $password,
-        array         $header
+        string $uri,
+        string $router,
+        string $username,
+        string $password,
+        array $header
     ) {
         $return = (new HttpRequestAdapter())
             ->setClient($requestClient)

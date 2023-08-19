@@ -6,12 +6,12 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "scripts": {
-    "phpcompatibility-version7-3": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.3 --extensions=php",
-    "phpcompatibility-version7-4": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 7.4 --extensions=php",
-    "phpcompatibility-version8-0": "./vendor/bin/phpcs -p --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0 --extensions=php",
+    "phpcompatibility-version7-3" : "vendor/bin/phpcs -p --standard=PSR12 src/ --runtime-set testVersion 7.3 --extensions=php",
+    "phpcompatibility-version7-4" : "./vendor/bin/phpcs -p --standard=PSR12 src/ --runtime-set testVersion 7.4 --extensions=php",
+    "phpcompatibility-version8-0" : "./vendor/bin/phpcs -p --standard=PSR12 src/ --runtime-set testVersion 8.0 --extensions=php",
     "phpcs-security": "./vendor/bin/phpcs --extensions=php --standard=ruleset-security-audit.xml ",
-    "lint": "phpcs --standard=PSR2 src/ examples/ tests/",
-    "lint-fix": "phpcbf --standard=PSR2 src/ examples/ tests/"
+    "lint": "phpcs --standard=PSR12 src/ examples/ tests/",
+    "lint-fix": "phpcbf --standard=PSR12 src/ examples/ tests/"
   },
   "archive": {
     "exclude": [
