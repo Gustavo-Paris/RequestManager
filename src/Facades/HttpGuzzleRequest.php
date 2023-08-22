@@ -68,7 +68,7 @@ class HttpGuzzleRequest implements
     /**
      * Constants to autenthication type functions
      */
-    private const AUTH_TYPES = [
+    public const AUTH_TYPES = [
         'basicAuth' => 'basicAuthenticate',
         'bearerToken' => 'bearerTokenAuthenticate',
     ];
@@ -76,7 +76,7 @@ class HttpGuzzleRequest implements
     /**
      * Constant to body type functions
      */
-    private const BODY_TYPES = [
+    public const BODY_TYPES = [
         'multipart' => 'handleMultipart',
         'json' => 'handleJson',
         'body' => 'handleBody',
@@ -128,33 +128,15 @@ class HttpGuzzleRequest implements
     }
 
     /**
+     * @param array $options
      * @return IHttpAdapter
      * @throws Throwable
      */
-    public function sendMultiCurl(): IHttpAdapter
+    public function requestMultiCurl(array $options): IHttpAdapter
     {
         $this->httpGuzzleMultiRequest->setClient($this->getClient());
-
-        if (!empty($this->basicAuthenticate)) {
-            $this->httpGuzzleMultiRequest->setAuth($this->basicAuthenticate);
-        }
-
-        if (!empty($this->bearerTokenAutenthicate)) {
-            $this->httpGuzzleMultiRequest->setAuth($this->bearerTokenAutenthicate);
-        }
-
-        if (!empty($this->body['data'])) {
-            $this->httpGuzzleMultiRequest->setBody([]);
-        }
-
-        if (!empty($this->headers)) {
-            $this->httpGuzzleMultiRequest->setHeader($this->headers);
-        }
-
-        if (!empty($this->options)) {
-            $this->httpGuzzleMultiRequest->setOptions($this->options);
-        }
-
+        $this->httpGuzzleMultiRequest->setUri($this->getUri());
+        $this->httpGuzzleMultiRequest->setMultiOptions($options);
         $this->httpGuzzleMultiRequest->send();
 
         return $this;
@@ -283,7 +265,7 @@ class HttpGuzzleRequest implements
     {
         if (!empty($headers)) {
             $this->options['headers'] = $headers;
-        } 
+        }
 
         return $this;
     }
@@ -325,18 +307,13 @@ class HttpGuzzleRequest implements
      * @param string $type
      * @return IHttpAdapter
      */
-    public function setData(array $data = [], string $type = ''): IHttpAdapter
+    public function setData(array $data = [], string $type = 'json'): IHttpAdapter
     {
-        if (empty($type)) {
-            $type = 'json';
-        }
-
         if (array_key_exists($type, self::BODY_TYPES)) {
             $method = self::BODY_TYPES[$type];
             $this->$method($data);
         }
 
-        $this->data = $data;
         return $this;
     }
 
@@ -346,15 +323,13 @@ class HttpGuzzleRequest implements
      */
     private function handleMultipart(array $data): array
     {
-        if (!empty($data['data'])) {
-            $data = $data['data'];
-        }
-
-        foreach ($data as $key => $value) {
-            $this->options['multipart'][] = [
-                "name" => $key,
-                "contents" => $value
-            ];
+        foreach ($data as $multiKey => $values) {
+            foreach ($values['data'] as $key => $value) {
+                $this->options['multipart'][] = [
+                    "name" => $key,
+                    "contents" => $value
+                ];
+            }
         }
 
         return $this->options;
@@ -413,5 +388,38 @@ class HttpGuzzleRequest implements
     {
         $this->setClient((new Client(['debug' => $flag])));
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @param string $type
+     * @return array
+     */
+    private function handleBody(array $data, string $type): array
+    {
+        if (array_key_exists($type, self::BODY_TYPES)) {
+            $method = self::BODY_TYPES[$type];
+            return $this->$method($data);
+        }
+        return [];
+    }
+
+    /**
+     * @param array $data
+     * @param string $type
+     * @return array
+     */
+    private function handleBodyMultiCurl(array $data, string $type): array
+    {
+        if (array_key_exists($type, self::BODY_TYPES)) {
+            $method = self::BODY_TYPES[$type];
+            return $this->$method($data);
+        }
+        return [];
+    }
+
+    public function response(): array
+    {
+        return $this->httpGuzzleMultiRequest->response();
     }
 }

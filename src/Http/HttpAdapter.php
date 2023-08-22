@@ -60,7 +60,7 @@ class HttpAdapter
      */
     public function setClient(?IHttpAdapter $client = null): HttpAdapter
     {
-        if(empty($client)) {
+        if (empty($client)) {
             $this->getContainer()->offsetSet(IHttpAdapter::class, (new HttpGuzzleRequest()));
             $this->client = $this->getContainer()
                 ->offsetGet(GetHttpRequest::class)

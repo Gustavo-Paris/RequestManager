@@ -7,6 +7,7 @@ use RequestManager\Exception\HttpException;
 use RequestManager\Exception\Messages;
 use RequestManager\Facades\HttpGuzzleMultiRequest;
 use RequestManager\Facades\HttpGuzzleRequest;
+use RequestManager\Helpers\ArrayBodyHelper;
 use RequestManager\Http\HttpAdapter;
 use RequestManager\Http\Manager\GetHttpRequest;
 use RequestManager\Http\Manager\GetHttpRequestGuzzle;
@@ -38,6 +39,12 @@ class Providers implements ServiceProviderInterface
      */
     public function registerAdapters(Container $pimple): void
     {
+        $pimple->offsetSet(ArrayBodyHelper::class, function (Container $pimple) {
+            $arrayBodyHelper = new ArrayBodyHelper();
+            $arrayBodyHelper->setDataRequestValidator($pimple[DataRequestValidator::class]);
+            return $arrayBodyHelper;
+        });
+
         $pimple->offsetSet(Messages::class, function () {
             return new Messages();
         });
@@ -58,8 +65,10 @@ class Providers implements ServiceProviderInterface
             return new Client();
         });
 
-        $pimple->offsetSet(HttpGuzzleMultiRequest::class, function () {
-            return new HttpGuzzleMultiRequest();
+        $pimple->offsetSet(HttpGuzzleMultiRequest::class, function (Container $pimple) {
+            $httpGuzzleMultiRequest = new HttpGuzzleMultiRequest();
+            $httpGuzzleMultiRequest->setArrayBodyHelper($pimple[ArrayBodyHelper::class]);
+            return $httpGuzzleMultiRequest;
         });
 
         $pimple->offsetSet(HttpGuzzleRequest::class, function (Container $pimple) {

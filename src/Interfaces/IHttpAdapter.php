@@ -67,9 +67,10 @@ interface IHttpAdapter
     public function setHeader(array $headers): IHttpAdapter;
 
     /**
+     * @param array $options
      * @return IHttpAdapter
      */
-    public function sendMultiCurl(): IHttpAdapter;
+    public function requestMultiCurl(array $options): IHttpAdapter;
 
     /**
      * @param array $data

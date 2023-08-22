@@ -4,6 +4,7 @@ namespace RequestManager\Facades;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
+use RequestManager\Helpers\ArrayBodyHelper;
 use Throwable;
 
 /**
@@ -20,6 +21,7 @@ class HttpGuzzleMultiRequest
      * @var array
      */
     private $arrayPromise = [];
+
     /**
      * @var array
      */
@@ -33,12 +35,17 @@ class HttpGuzzleMultiRequest
     /**
      * @var array
      */
-    private $body = [];
+    private $data = [];
 
     /**
      * @var array
      */
     private $options = [];
+
+    /**
+     * @var array
+     */
+    private $multiOptions = [];
 
     /**
      * @var array
@@ -51,15 +58,25 @@ class HttpGuzzleMultiRequest
     private $responsePromisse = [];
 
     /**
+     * @var string
+     */
+    private $uri = '';
+
+    /**
      * @var Client
      */
     private $client;
 
     /**
-     * @return array|mixed
+     * @var ArrayBodyHelper
+     */
+    private $arrayBodyHelper;
+
+    /**
+     * @return array
      * @throws Throwable
      */
-    public function send()
+    public function send(): array
     {
         $this->generateArrayPromises();
 
@@ -67,7 +84,7 @@ class HttpGuzzleMultiRequest
             Utils::unwrap($this->getArrayPromise())
         )->wait();
 
-        return $this->response;
+        return $this->handleResponse($this->response);
     }
 
     /**
@@ -75,10 +92,13 @@ class HttpGuzzleMultiRequest
      */
     public function generateArrayPromises(): array
     {
-        foreach ($this->body['body'] as $key => $value) {
+        foreach ($this->getOptions() as $key => $value) {
             $method = $this->generateMethodType($value['method']);
+            $router = $this->generateUri($value['router']);
+            unset($value['router'], $value['method']);
+
             $this->setOptions($value);
-            $this->setArrayPromise($this->getClient()->$method($value['router'], $this->getOptions()));
+            $this->setArrayPromise($this->getClient()->$method($router, $this->getOptions()));
         }
 
         return $this->getArrayPromise();
@@ -94,15 +114,32 @@ class HttpGuzzleMultiRequest
     }
 
     /**
+     * @param string $uri
+     * @return string
+     */
+    private function generateUri(string $uri): string
+    {
+        return $this->getUri() . DIRECTORY_SEPARATOR . $uri;
+    }
+
+    /**
      * @param array $data
      * @return array
      */
-    public function response(array $data): array
+    private function handleResponse(array $data): array
     {
         foreach ($data as $key => $value) {
             $this->setResponsePromisse(json_decode($data[$key]['value']->getBody()->getContents(), true));
         }
 
+        return $this->getResponsePromisse();
+    }
+
+    /**
+     * @return array
+     */
+    public function response(): array
+    {
         return $this->getResponsePromisse();
     }
 
@@ -116,10 +153,24 @@ class HttpGuzzleMultiRequest
 
     /**
      * @param array $auth
+     * @param string $type
+     * @return array
      */
-    public function setAuth(array $auth): void
+    public function setAuth(array $auth, string $type = ''): array
     {
-        $this->auth['auth'] = $auth;
+        if ($type === 'basicAuth') {
+            $this->auth['auth'] = [$auth['username'], $auth['password']];
+            return $this->auth;
+        } elseif ($type === 'bearerToken') {
+            $this->header['headers'] = [
+                'Authorization' => 'Bearer ' . $auth['token'],
+                'Accept' => 'application/json',
+            ];
+
+            return $this->header;
+        }
+
+        return [];
     }
 
     /**
@@ -135,23 +186,27 @@ class HttpGuzzleMultiRequest
      */
     public function setHeader(array $header): void
     {
-        $this->header = $header;
+        $this->header['headers'] = $header;
     }
 
     /**
      * @return array
      */
-    public function getBody(): array
+    public function getData(): array
     {
-        return $this->body;
+        return $this->data;
     }
 
     /**
-     * @param array $body
+     * @param array $data
      */
-    public function setBody(array $body): void
+    public function setData(array $data): void
     {
-        $this->body = $body;
+        if (array_key_exists($data['type'], HttpGuzzleRequest::BODY_TYPES)) {
+            $method = HttpGuzzleRequest::BODY_TYPES[$data['type']];
+            $this->arrayBodyHelper->$method($data['data']);
+        }
+        $this->data = $data;
     }
 
     /**
@@ -164,16 +219,46 @@ class HttpGuzzleMultiRequest
 
     /**
      * @param array $options
+     * @return void
      */
-    public function setOptions(array $options): void
+    private function setOptions(array $options): void
     {
-        if (!is_null($this->auth)) {
-            $this->options['auth'] = $this->auth;
-        }
-        if (!is_null($this->header)) {
-            $this->options['headers'] = $this->header;
-        }
         $this->options = $options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setMultiOptions(array $options): void
+    {
+        $newOptions = [];
+
+        foreach ($options as $option) {
+            if (!empty($option['auth'])) {
+                $this->multiOptions['auth'] = [
+                    $option['auth']['data']['username'],
+                    $option['auth']['data']['password']
+                ];
+            }
+
+            if (!empty($option['headers'])) {
+                $this->multiOptions['headers'] = $option['headers'];
+            }
+
+            if (!empty($option['options']['data'])) {
+                if (array_key_exists($option['options']['type'], HttpGuzzleRequest::BODY_TYPES)) {
+                    $method = HttpGuzzleRequest::BODY_TYPES[$option['options']['type']];
+                    $type = $option['options']['type'];
+                    $this->arrayBodyHelper->$method($option['options']['data']);
+                    $this->multiOptions[$type] = $this->arrayBodyHelper->getOptions()[$type];
+                }
+            }
+            $this->multiOptions['router'] = $option['router'];
+            $this->multiOptions['method'] = $option['method'];
+            $newOptions[] = $this->multiOptions;
+        }
+
+        $this->setOptions($newOptions);
     }
 
     /**
@@ -238,5 +323,29 @@ class HttpGuzzleMultiRequest
     public function setResponsePromisse(array $responsePromisse): void
     {
         $this->responsePromisse[] = $responsePromisse;
+    }
+
+    /**
+     * @param ArrayBodyHelper $arrayBodyHelper
+     */
+    public function setArrayBodyHelper(ArrayBodyHelper $arrayBodyHelper): void
+    {
+        $this->arrayBodyHelper = $arrayBodyHelper;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $uri
+     */
+    public function setUri(string $uri): void
+    {
+        $this->uri = $uri;
     }
 }
